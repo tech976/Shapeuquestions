@@ -2,14 +2,24 @@
  * Shape U Clinic — lead capture endpoint.
  *
  * Receives the JSON payload posted by index.html (submitLead()) and appends
- * one row per lead to the bound Google Sheet.
+ * one row per lead to its own tab in an existing Google Sheet.
+ *
+ * This runs as a STANDALONE script with its own deployment URL, so it does not
+ * touch — or conflict with — the script already serving the other landing page.
+ * Two bound scripts cannot share one spreadsheet, and two doPost functions
+ * cannot share one script project; opening by ID sidesteps both limits.
  *
  * Setup instructions: see README.md in this folder.
  */
 
 /* ── Settings ──────────────────────────────────────────────────────────── */
 
-// Tab the leads are written to. Created automatically if missing.
+// The spreadsheet to write into — the long id in its URL:
+// https://docs.google.com/spreadsheets/d/THIS_PART_HERE/edit
+const SPREADSHEET_ID = 'PASTE_YOUR_SPREADSHEET_ID_HERE';
+
+// Tab this LP's leads go to. Created automatically if missing, and kept
+// separate from the tab the other landing page writes to.
 const SHEET_NAME = 'Question LP';
 
 // Timezone used for the timestamp column.
@@ -53,9 +63,16 @@ function doPost(e) {
   }
 }
 
-// Open the web app URL in a browser to confirm the deployment is live.
+// Open the web app URL in a browser to confirm the deployment is live AND that
+// it can actually reach the spreadsheet — catches a wrong id before any real
+// lead is lost to it.
 function doGet() {
-  return json({ ok: true, service: 'Shape U lead capture' });
+  try {
+    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    return json({ ok: true, spreadsheet: ss.getName(), tab: SHEET_NAME });
+  } catch (err) {
+    return json({ ok: false, error: String(err) });
+  }
 }
 
 /* ── Core ──────────────────────────────────────────────────────────────── */
@@ -82,8 +99,8 @@ function appendLead(lead) {
 }
 
 function getSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
 
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(COLUMNS);
@@ -105,7 +122,7 @@ function notify(lead, row) {
       `Clinic:  ${lead.clinic || '—'}`,
       `Callback: ${lead.slot || '—'}`,
       ``,
-      `Sheet row ${row}: ${SpreadsheetApp.getActiveSpreadsheet().getUrl()}`
+      `Sheet row ${row}: ${SpreadsheetApp.openById(SPREADSHEET_ID).getUrl()}`
     ].join('\n')
   });
 }
