@@ -19,27 +19,18 @@ const TIMEZONE = 'Asia/Kolkata';
 const NOTIFY_EMAIL = '';
 
 // Columns, in order. Header row is written automatically on first run.
+// One column per question the landing page actually asks — nothing else.
 const COLUMNS = [
   'Timestamp',
   'Name',
   'Phone',
-  'Full Phone',
   'WhatsApp OK',
   'Goal',
   'Goal Price',
   'Intent',
   'Priority',
   'Clinic',
-  'Callback Slot',
-  'Source',
-  'utm_source',
-  'utm_medium',
-  'utm_campaign',
-  'utm_term',
-  'utm_content',
-  'gclid',
-  'fbclid',
-  'Submitted At (UTC)'
+  'Callback Slot'
 ];
 
 /* ── Entry points ──────────────────────────────────────────────────────── */
@@ -71,31 +62,20 @@ function doGet() {
 
 function appendLead(lead) {
   const sheet = getSheet();
-  const utm = lead.utm || {};
 
   sheet.appendRow([
     Utilities.formatDate(new Date(), TIMEZONE, 'yyyy-MM-dd HH:mm:ss'),
     lead.name || '',
     // Leading apostrophe keeps Sheets from treating a leading + as a formula
     // and from stripping a leading 0 off the number.
-    text(lead.phone),
-    text(lead.fullPhone),
+    text(lead.fullPhone || lead.phone),
     lead.whatsapp ? 'Yes' : 'No',
     lead.goal || '',
     lead.goalPrice || '',
     lead.intent || '',
     lead.lead_priority || lead.tier || '',
     lead.clinic || '',
-    lead.slot || '',
-    lead.source || '',
-    utm.utm_source || '',
-    utm.utm_medium || '',
-    utm.utm_campaign || '',
-    utm.utm_term || '',
-    utm.utm_content || '',
-    utm.gclid || '',
-    utm.fbclid || '',
-    lead.submittedAt || ''
+    lead.slot || ''
   ]);
 
   return sheet.getLastRow();

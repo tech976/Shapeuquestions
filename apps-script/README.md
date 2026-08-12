@@ -73,8 +73,10 @@ Then redeploy. Gmail allows roughly 100 such emails per day on a free account,
 - **Phone numbers are stored as text** (with a hidden leading apostrophe) so
   Sheets doesn't mangle `+91…` into a formula or strip leading zeros. They stay
   copy-pasteable as normal.
-- **UTM parameters** are captured automatically from the page's query string, so
-  `?utm_source=google&utm_campaign=belly-fat` gets attributed per lead. `gclid`
-  and `fbclid` are captured too.
+- **Only the page's own questions get columns.** UTM / `gclid` / `fbclid` ad
+  attribution is deliberately *not* written to the sheet. The page still sends
+  it, so if you later want to know which campaign produced a lead, add the
+  columns back to `COLUMNS` and the matching `utm.utm_source || ''` lines to
+  `appendLead` — no landing page change needed.
 - **Failed submissions** are logged in Apps Script under **Executions**, with the
   raw payload — check there if a lead is missing.
