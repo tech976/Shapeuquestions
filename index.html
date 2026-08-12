@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="format-detection" content="telephone=no" />
+<title>Shape U Clinic — Lose Stubborn Belly Fat | Book a Free Consultation</title>
+<meta name="description" content="Ranked #1 weight loss clinic in Mumbai. Doctor-supervised, painless U-Lipolysis. Get 2 sessions free on a 10-session plan. Check your eligibility now." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   SHAPE U CLINIC — HIGH-PICKUP LANDING FORM
+   Built by DigiVeritaz. Single file. Netlify-ready.
+   Config block is in the <script> at the bottom.
+   ============================================================ */
+
+:root{
+  --red:#C1272D;
+  --red-deep:#921B20;
+  --green:#2E8B3D;
+  --green-deep:#1F6B2B;
+  --wa:#25D366;
+  --ink:#17171F;
+  --muted:#6C6C77;
+  --line:#E9E5DE;
+  --line-2:#F0ECE4;
+  --paper:#F5F2EC;
+  --card:#FFFFFF;
+  --shadow:0 10px 30px rgba(23,23,31,.10);
+  --shadow-soft:0 4px 14px rgba(23,23,31,.06);
+  --r:16px;
+  --r-lg:22px;
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Inter",system-ui,-apple-system,sans-serif;
+  color:var(--ink);
+  background:var(--paper);
+  background-image:radial-gradient(120% 80% at 50% -10%, #ffffff 0%, var(--paper) 60%);
+  min-height:100dvh;
+  -webkit-font-smoothing:antialiased;
+}
+
+.app{
+  max-width:480px;
+  margin:0 auto;
+  min-height:100dvh;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  background:transparent;
+}
+
+/* ---------- Progress ---------- */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  padding:12px 18px 10px;
+  background:rgba(245,242,236,.86);
+  backdrop-filter:saturate(140%) blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.topbar.hidden{display:none}
+.brand-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+.brand{display:flex;align-items:center;gap:8px;font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:14px;letter-spacing:-.01em}
+.brand .dot{width:22px;height:22px;border-radius:7px;background:var(--red);display:grid;place-items:center;color:#fff;font-size:12px;font-weight:800}
+.brand small{display:block;font-weight:600;font-size:9px;letter-spacing:.16em;color:var(--muted);margin-top:-1px}
+.step-count{font-size:11px;font-weight:600;color:var(--muted)}
+.progress{height:6px;border-radius:99px;background:#e3ded5;overflow:hidden}
+.progress > i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--red),#E0574B);transition:width .5s cubic-bezier(.22,1,.36,1)}
+
+/* ---------- Screen system ---------- */
+main{flex:1;position:relative;overflow:hidden}
+.screen{
+  display:none;
+  padding:20px 18px 128px;
+  animation:slideIn .42s cubic-bezier(.22,1,.36,1);
+}
+.screen.active{display:block}
+@keyframes slideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .screen{animation:none}
+  .progress > i{transition:none}
+}
+
+/* ---------- HERO (screen 0) ---------- */
+.hero{
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  position:relative;
+  background:#1c1c22;
+  margin-bottom:16px;
+}
+.hero .photo{
+  height:264px;
+  /* ── SWAP IN YOUR OWN AD CREATIVE HERE ──────────────────────────────
+     To use the actual ad image, replace the 3 background layers below with:
+     background: linear-gradient(180deg, rgba(20,20,26,.08), rgba(20,20,26,.9)),
+                 url('hero.jpg') center/cover no-repeat;
+     Keep the dark gradient on top so the white headline stays readable. */
+  background:
+    radial-gradient(120% 95% at 12% 8%, rgba(224,87,75,.55), transparent 52%),
+    radial-gradient(90% 80% at 100% 0%, rgba(255,210,76,.16), transparent 48%),
+    linear-gradient(158deg, #7c161a 0%, #3a0d10 58%, #1b1b21 100%);
+  position:relative;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:20px;
+}
+.hero .photo::before{
+  content:"";position:absolute;inset:0;opacity:.5;pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.16) 1px, transparent 1.4px);
+  background-size:15px 15px;
+  -webkit-mask-image:linear-gradient(180deg,#000,transparent 60%);
+  mask-image:linear-gradient(180deg,#000,transparent 60%);
+}
+.eyebrow{
+  align-self:flex-start;
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--red);color:#fff;
+  font-size:10.5px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;
+  padding:6px 11px;border-radius:99px;margin-bottom:auto;
+}
+.hero h1{
+  font-family:"Plus Jakarta Sans",sans-serif;
+  color:#fff;font-weight:800;letter-spacing:-.02em;line-height:1.08;
+  font-size:29px;margin:0 0 8px;
+}
+.hero h1 .hl{color:#FFD24C}
+.hero .subline{color:rgba(255,255,255,.86);font-size:13.5px;font-weight:500;margin:0}
+
+.trust-strip{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:var(--line);
+}
+.trust-strip .cell{
+  background:var(--card);padding:12px 14px;
+}
+.trust-strip .cell b{display:block;font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:17px;letter-spacing:-.01em}
+.trust-strip .cell span{font-size:11px;color:var(--muted);font-weight:500}
+
+.assurances{
+  display:flex;flex-wrap:wrap;gap:7px;margin:16px 0 4px;
+}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#fff;border:1px solid var(--line);
+  padding:8px 12px;border-radius:99px;font-size:12px;font-weight:600;color:#3a3a44;
+  box-shadow:var(--shadow-soft);
+}
+.chip svg{flex:none}
+
+.offer-banner{
+  margin-top:16px;
+  border-radius:var(--r);
+  border:1.5px dashed var(--red);
+  background:linear-gradient(180deg,#fff5f4,#fff);
+  padding:14px 16px;
+  display:flex;gap:12px;align-items:center;
+}
+.offer-banner .gift{width:42px;height:42px;border-radius:12px;background:var(--red);display:grid;place-items:center;flex:none}
+.offer-banner h3{margin:0;font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:15.5px;color:var(--red-deep)}
+.offer-banner p{margin:2px 0 0;font-size:12px;color:var(--muted);font-weight:500}
+.offer-banner .timer{font-weight:700;color:var(--red)}
+
+/* ---------- Question screens ---------- */
+.q-kicker{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:2px 0 10px}
+.q-title{font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:23px;line-height:1.16;letter-spacing:-.02em;margin:0 0 5px}
+.q-sub{font-size:13.5px;color:var(--muted);margin:0 0 20px;font-weight:500}
+
+.options{display:flex;flex-direction:column;gap:11px}
+.opt{
+  display:flex;align-items:center;gap:14px;
+  width:100%;text-align:left;cursor:pointer;
+  background:var(--card);border:1.5px solid var(--line);
+  border-radius:var(--r);padding:16px 16px;
+  font-family:inherit;font-size:15.5px;font-weight:600;color:var(--ink);
+  transition:border-color .18s, box-shadow .18s, transform .12s, background .18s;
+}
+.opt:hover{border-color:#d9c9c8}
+.opt:active{transform:scale(.985)}
+.opt .radio{
+  width:24px;height:24px;border-radius:50%;flex:none;margin-left:auto;
+  border:2px solid #cfc9bf;display:grid;place-items:center;transition:all .18s;
+}
+.opt .radio i{width:11px;height:11px;border-radius:50%;background:#fff;transform:scale(0);transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.opt.on{border-color:var(--red);background:#fffaf9;box-shadow:0 0 0 4px rgba(193,39,45,.08)}
+.opt.on .radio{border-color:var(--red);background:var(--red)}
+.opt.on .radio i{transform:scale(1)}
+.opt .lead-ico{width:38px;height:38px;border-radius:11px;background:#f4f0e9;display:grid;place-items:center;flex:none;font-size:19px}
+.opt .txt b{display:block}
+.opt .txt small{display:block;font-weight:500;font-size:12px;color:var(--muted);margin-top:1px}
+
+.badge-best{
+  margin-left:8px;font-size:9.5px;font-weight:800;letter-spacing:.05em;
+  background:var(--green);color:#fff;padding:3px 7px;border-radius:6px;text-transform:uppercase;
+}
+
+/* ---------- Contact form ---------- */
+.field{margin-bottom:18px}
+.field label{display:block;font-size:12.5px;font-weight:700;color:#3a3a44;margin-bottom:7px;letter-spacing:.01em}
+.field .hint{font-size:11.5px;color:var(--muted);margin-top:6px;font-weight:500;display:flex;align-items:center;gap:5px}
+.inp-wrap{position:relative;display:flex;align-items:center}
+.inp-wrap .pre{
+  position:absolute;left:15px;font-weight:700;font-size:15px;color:#3a3a44;pointer-events:none;
+  display:flex;align-items:center;gap:7px;height:22px;
+}
+.inp-wrap .pre::after{content:"";width:1px;height:22px;background:var(--line);margin-left:9px}
+input.txt-inp{
+  width:100%;font-family:inherit;font-size:16px;font-weight:600;color:var(--ink);
+  background:var(--card);border:1.5px solid var(--line);border-radius:14px;
+  padding:15px 15px;transition:border-color .18s, box-shadow .18s;letter-spacing:.02em;
+}
+input.txt-inp.with-pre{padding-left:96px}
+input.txt-inp::placeholder{color:#b7b2a8;font-weight:500}
+input.txt-inp:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 4px rgba(193,39,45,.08)}
+input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
+.err-msg{color:#d13a3a;font-size:12px;font-weight:600;margin-top:6px;display:none}
+.err-msg.show{display:block}
+
+.wa-optin{
+  display:flex;align-items:flex-start;gap:12px;
+  background:#f2fbf4;border:1.5px solid #cfeed4;
+  border-radius:14px;padding:14px;margin-top:4px;cursor:pointer;
+}
+.wa-optin .box{
+  width:24px;height:24px;border-radius:7px;flex:none;margin-top:1px;
+  border:2px solid var(--green);display:grid;place-items:center;background:#fff;transition:all .18s;
+}
+.wa-optin.on .box{background:var(--green)}
+.wa-optin .box svg{opacity:0;transform:scale(.4);transition:all .2s}
+.wa-optin.on .box svg{opacity:1;transform:scale(1)}
+.wa-optin .t b{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:6px}
+.wa-optin .t small{display:block;font-size:11.5px;color:#4a6a4f;margin-top:2px;font-weight:500}
+
+.privacy-note{
+  display:flex;gap:9px;align-items:flex-start;margin-top:18px;
+  font-size:11.5px;color:var(--muted);font-weight:500;line-height:1.5;
+}
+.privacy-note svg{flex:none;margin-top:1px}
+
+/* ---------- Sticky footer CTA ---------- */
+.footer{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  max-width:480px;margin:0 auto;
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg, rgba(245,242,236,0), var(--paper) 26%);
+}
+.cta{
+  width:100%;border:none;cursor:pointer;font-family:"Plus Jakarta Sans",sans-serif;
+  font-size:16.5px;font-weight:800;letter-spacing:.01em;color:#fff;
+  background:var(--red);border-radius:16px;padding:17px 20px;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  box-shadow:0 8px 22px rgba(193,39,45,.30);
+  transition:transform .12s, background .18s, opacity .2s;
+}
+.cta:active{transform:translateY(1px) scale(.995)}
+.cta:disabled{background:#d7b8b8;box-shadow:none;cursor:not-allowed}
+.cta.wa{background:var(--wa);box-shadow:0 8px 22px rgba(37,211,102,.30)}
+.cta.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line);box-shadow:var(--shadow-soft);font-weight:700}
+.back-link{
+  display:block;text-align:center;background:none;border:none;
+  color:var(--muted);font-size:12.5px;font-weight:600;padding:9px;margin-top:2px;cursor:pointer;
+  font-family:inherit;
+}
+.slots-left{
+  text-align:center;font-size:11.5px;font-weight:600;color:var(--red);margin-bottom:8px;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.slots-left .pulse{width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(193,39,45,.5)}50%{opacity:.6;box-shadow:0 0 0 6px rgba(193,39,45,0)}}
+
+/* ---------- Confirmation screen ---------- */
+.confirm-wrap{text-align:center;padding-top:8px}
+.check-burst{
+  width:78px;height:78px;border-radius:50%;margin:6px auto 16px;
+  background:var(--green);display:grid;place-items:center;
+  box-shadow:0 0 0 0 rgba(46,139,61,.35);animation:burst .7s ease-out;
+}
+@keyframes burst{0%{transform:scale(.4);box-shadow:0 0 0 0 rgba(46,139,61,.5)}60%{transform:scale(1.08)}100%{transform:scale(1);box-shadow:0 0 0 22px rgba(46,139,61,0)}}
+.confirm-wrap h2{font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:24px;letter-spacing:-.02em;margin:0 0 6px}
+.confirm-wrap .lead{font-size:14px;color:var(--muted);margin:0 0 22px;font-weight:500}
+.confirm-wrap .lead b{color:var(--ink)}
+
+.callcard{
+  background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);
+  padding:18px;text-align:left;box-shadow:var(--shadow-soft);margin-bottom:14px;
+}
+.callcard .cc-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.callcard .cc-ico{width:44px;height:44px;border-radius:12px;background:#eef7f0;display:grid;place-items:center;flex:none}
+.callcard .cc-top b{font-family:"Plus Jakarta Sans",sans-serif;font-size:15px;font-weight:800}
+.callcard .cc-top small{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
+.numline{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:#faf8f3;border:1px dashed #d9d3c8;border-radius:12px;padding:12px 14px;margin-bottom:12px;
+}
+.numline .num{font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:17px;letter-spacing:.01em}
+.numline .num small{display:block;font-size:10.5px;font-weight:600;color:var(--muted);letter-spacing:.02em;text-transform:uppercase;margin-bottom:2px}
+.save-btn{
+  border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:12.5px;
+  background:var(--ink);color:#fff;border-radius:10px;padding:10px 13px;white-space:nowrap;
+  display:flex;align-items:center;gap:6px;
+}
+.save-btn:active{transform:scale(.97)}
+.why{font-size:12px;color:var(--muted);font-weight:500;line-height:1.5;display:flex;gap:8px;align-items:flex-start}
+.why svg{flex:none;margin-top:1px}
+
+/* ---------- Scratch / reveal card ---------- */
+.reveal{
+  position:relative;border-radius:var(--r);overflow:hidden;margin-bottom:16px;
+  border:1.5px solid var(--line);box-shadow:var(--shadow-soft);
+  height:150px;
+  -webkit-user-select:none;user-select:none;
+}
+.reveal .prize{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,#fffdf6,#fff);
+  text-align:center;padding:12px;
+}
+.reveal .prize .rp-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:4px}
+.reveal .prize .rp-main{font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:21px;line-height:1.14;letter-spacing:-.02em;color:var(--ink)}
+.reveal .prize .rp-sub{font-size:12px;color:var(--muted);font-weight:600;margin-top:6px}
+.reveal canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
+.reveal .scratch-hint{
+  position:absolute;left:0;right:0;bottom:12px;text-align:center;
+  font-size:12px;font-weight:700;color:#fff;pointer-events:none;
+  text-shadow:0 1px 4px rgba(0,0,0,.25);animation:bob 1.6s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.reveal.done .scratch-hint{display:none}
+
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden;display:none}
+.confetti.go{display:block}
+
+/* ---------- misc ---------- */
+.hidden{display:none !important}
+.center{text-align:center}
+.footnote{text-align:center;font-size:11px;color:#9a958b;font-weight:500;padding:14px 20px 4px}
+.footnote a{color:#9a958b}
+:focus-visible{outline:3px solid rgba(193,39,45,.4);outline-offset:2px;border-radius:8px}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- PROGRESS BAR -->
+  <div class="topbar hidden" id="topbar">
+    <div class="brand-row">
+      <div class="brand">
+        <span class="dot">S</span>
+        <span>Shape U Clinic<small>OBESITY &amp; WEIGHT LOSS</small></span>
+      </div>
+      <span class="step-count" id="stepCount">Step 1 of 5</span>
+    </div>
+    <div class="progress"><i id="progressFill"></i></div>
+  </div>
+
+  <main id="main">
+
+    <!-- ============ SCREEN 0 : HERO ============ -->
+    <section class="screen active" data-screen="0">
+      <div class="hero">
+        <div class="photo">
+          <span class="eyebrow">Tried &amp; Tested · U-Lipolysis</span>
+          <h1>Stubborn belly fat? <span class="hl">Melt it, painlessly.</span></h1>
+          <p class="subline">Ranked #1 weight-loss clinic in Mumbai · Doctor-supervised</p>
+        </div>
+        <div class="trust-strip">
+          <div class="cell"><b>40,000+</b><span>Happy patients</span></div>
+          <div class="cell"><b>15,000+ kg</b><span>Reduced safely</span></div>
+        </div>
+      </div>
+
+      <div class="assurances">
+        <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#2E8B3D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>100% Painless</span>
+        <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#2E8B3D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Doctor-supervised</span>
+        <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#2E8B3D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>No surgery, no downtime</span>
+      </div>
+
+      <div class="offer-banner">
+        <div class="gift">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 12v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8M2 7h20v5H2zM12 21V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <h3>Get 2 sessions FREE</h3>
+          <p>On a 10-session plan · Offer ends in <span class="timer" id="offerTimer">47:59:58</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 1 : GOAL ============ -->
+    <section class="screen" data-screen="1">
+      <p class="q-kicker">Your goal</p>
+      <h2 class="q-title">How much weight do you want to lose?</h2>
+      <p class="q-sub">We’ll build a plan and price around your exact target.</p>
+      <div class="options" data-group="goal">
+        <button class="opt" data-value="Lose up to 5 kg" data-price="₹20,000">
+          <span class="lead-ico">🎯</span>
+          <span class="txt"><b>Lose up to 5 kg</b><small>Plans from ₹20,000</small></span>
+          <span class="radio"><i></i></span>
+        </button>
+        <button class="opt" data-value="Lose up to 10 kg" data-price="₹30,000">
+          <span class="lead-ico">🔥</span>
+          <span class="txt"><b>Lose up to 10 kg <span class="badge-best">Most chosen</span></b><small>Plans from ₹30,000</small></span>
+          <span class="radio"><i></i></span>
+        </button>
+        <button class="opt" data-value="Lose 10 kg or more" data-price="₹30,000+">
+          <span class="lead-ico">💪</span>
+          <span class="txt"><b>Lose 10 kg or more</b><small>Custom plan · ₹30,000+</small></span>
+          <span class="radio"><i></i></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 2 : INTENT / TIMING ============ -->
+    <section class="screen" data-screen="2">
+      <p class="q-kicker">Timeline</p>
+      <h2 class="q-title">How soon do you want to start?</h2>
+      <p class="q-sub">This helps us hold the right slot for you. Be honest — no pressure.</p>
+      <div class="options" data-group="intent">
+        <button class="opt" data-value="Right away (this week)" data-tier="hot">
+          <span class="lead-ico">⚡</span>
+          <span class="txt"><b>Right away — this week</b><small>Priority callback + best offer</small></span>
+          <span class="radio"><i></i></span>
+        </button>
+        <button class="opt" data-value="Within this month" data-tier="warm">
+          <span class="lead-ico">📅</span>
+          <span class="txt"><b>Within this month</b><small>We’ll plan your start date</small></span>
+          <span class="radio"><i></i></span>
+        </button>
+        <button class="opt" data-value="Just exploring for now" data-tier="cold">
+          <span class="lead-ico">🔎</span>
+          <span class="txt"><b>Just exploring for now</b><small>Get info on WhatsApp, no calls</small></span>
+          <span class="radio"><i></i></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 3 : CLINIC ============ -->
+    <section class="screen" data-screen="3">
+      <p class="q-kicker">Location</p>
+      <h2 class="q-title">Which clinic is nearest to you?</h2>
+      <p class="q-sub">3 branches across Mumbai. Pick the most convenient one.</p>
+      <div class="options" data-group="clinic">
+        <button class="opt" data-value="Andheri">
+          <span class="lead-ico">📍</span>
+          <span class="txt"><b>Andheri</b><small>West · near station</small></span>
+          <span class="radio"><i></i></span>
+        </button>
+        <button class="opt" data-value="Malad">
+          <span class="lead-ico">📍</span>
+          <span class="txt"><b>Malad</b><small>West · Link Road</small></span>
+          <span class="radio"><i></i></span>
+        </button>
+        <button class="opt" data-value="Mulund">
+          <span class="lead-ico">📍</span>
+          <span class="txt"><b>Mulund</b><small>West · LBS Marg</small></span>
+          <span class="radio"><i></i></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 4 : CALLBACK SLOT ============ -->
+    <section class="screen" data-screen="4">
+      <p class="q-kicker">Your callback</p>
+      <h2 class="q-title">When should our specialist call you?</h2>
+      <p class="q-sub">You’ll get <b>one call from a single number</b> at the time you pick. Choose a window you can actually take the call.</p>
+      <div class="options" data-group="slot">
+        <button class="opt" data-value="Call me now">
+          <span class="lead-ico">📞</span>
+          <span class="txt"><b>Call me now</b><small>Fastest — usually within 10 min</small></span>
+          <span class="radio"><i></i></span>
+        </button>
+        <button class="opt" data-value="10:00 AM – 12:00 PM"><span class="lead-ico">🕙</span><span class="txt"><b>10:00 AM – 12:00 PM</b></span><span class="radio"><i></i></span></button>
+        <button class="opt" data-value="12:00 PM – 2:00 PM"><span class="lead-ico">🕛</span><span class="txt"><b>12:00 PM – 2:00 PM</b></span><span class="radio"><i></i></span></button>
+        <button class="opt" data-value="2:00 PM – 4:00 PM"><span class="lead-ico">🕑</span><span class="txt"><b>2:00 PM – 4:00 PM</b></span><span class="radio"><i></i></span></button>
+        <button class="opt" data-value="4:00 PM – 6:00 PM"><span class="lead-ico">🕓</span><span class="txt"><b>4:00 PM – 6:00 PM</b></span><span class="radio"><i></i></span></button>
+        <button class="opt" data-value="6:00 PM – 8:00 PM"><span class="lead-ico">🕕</span><span class="txt"><b>6:00 PM – 8:00 PM</b></span><span class="radio"><i></i></span></button>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 5 : CONTACT ============ -->
+    <section class="screen" data-screen="5">
+      <p class="q-kicker">Last step</p>
+      <h2 class="q-title">Where should we confirm your slot?</h2>
+      <p class="q-sub">Enter your own number so we call the right person. We confirm on WhatsApp too.</p>
+
+      <!-- autocomplete off + random names to defeat browser/Meta prefill -->
+      <form id="leadForm" autocomplete="off" novalidate>
+        <div class="field">
+          <label for="fname">Your first name</label>
+          <input class="txt-inp" id="fname" name="f_9x3k" type="text" inputmode="text"
+                 autocomplete="off" autocorrect="off" spellcheck="false"
+                 data-lpignore="true" data-form-type="other" placeholder="e.g. Priya" maxlength="30" />
+          <div class="err-msg" id="fnameErr">Please enter your name.</div>
+        </div>
+
+        <div class="field">
+          <label for="phone">Mobile number</label>
+          <div class="inp-wrap">
+            <span class="pre">🇮🇳 +91</span>
+            <input class="txt-inp with-pre" id="phone" name="p_7m2v" type="tel" inputmode="numeric"
+                   autocomplete="off" autocorrect="off" spellcheck="false"
+                   data-lpignore="true" data-form-type="other" placeholder="10-digit mobile" maxlength="10" />
+          </div>
+          <div class="hint">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#6C6C77" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            Used only to confirm your appointment. No spam, ever.
+          </div>
+          <div class="err-msg" id="phoneErr">Enter a valid 10-digit mobile starting 6–9.</div>
+        </div>
+
+        <div class="wa-optin on" id="waOptin" role="checkbox" aria-checked="true" tabindex="0">
+          <span class="box"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="t">
+            <b>Confirm on WhatsApp <svg width="15" height="15" viewBox="0 0 24 24" fill="#25D366"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.8.8.8-2.8-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.1-.3 0-.5l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.9.9-.9 2.1-.9 2.3s.9 2.5 2.2 3.7a8 8 0 0 0 3.4 1.9c1.2.4 1.7.3 2.3.2.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.1-.2-.2-.4-.3z"/></svg></b>
+            <small>So you can chat if you miss the call. Recommended.</small>
+          </span>
+        </div>
+
+        <div class="privacy-note">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="11" rx="2" stroke="#6C6C77" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="#6C6C77" stroke-width="1.6"/></svg>
+          Your details are safe with Shape U Clinic and are never sold or shared. You’ll receive one confirmation call and a WhatsApp message only.
+        </div>
+      </form>
+    </section>
+
+    <!-- ============ SCREEN 6 : CONFIRMATION ============ -->
+    <section class="screen" data-screen="6">
+      <div class="confirm-wrap">
+        <div class="check-burst">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2>You’re booked, <span id="doneName">friend</span>!</h2>
+        <p class="lead">Our specialist will call you <b id="doneSlot">shortly</b> to help you <b id="doneGoal">reach your goal</b> — at <b id="doneClinic">our clinic</b>.</p>
+
+        <!-- SAVE NUMBER — the pickup booster -->
+        <div class="callcard">
+          <div class="cc-top">
+            <div class="cc-ico">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15.5 2h-7A2.5 2.5 0 0 0 6 4.5v15A2.5 2.5 0 0 0 8.5 22h7a2.5 2.5 0 0 0 2.5-2.5v-15A2.5 2.5 0 0 0 15.5 2zM11 4h2M12 19h.01" stroke="#2E8B3D" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <b>Save our number now</b>
+              <small>So you know it’s us — and don’t miss the call.</small>
+            </div>
+          </div>
+          <div class="numline">
+            <div class="num"><small>Calling from</small><span id="callNumDisplay">+91 90000 00000</span></div>
+            <button class="save-btn" id="saveContactBtn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+              Save contact
+            </button>
+          </div>
+          <p class="why">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#2E8B3D" stroke-width="1.6"/><path d="M12 8v5M12 16h.01" stroke="#2E8B3D" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Saved numbers get answered 3× more often than unknown calls. Takes 5 seconds.
+          </p>
+        </div>
+
+        <!-- SCRATCH / REVEAL OFFER -->
+        <p class="q-kicker center" style="margin-bottom:8px">Your bonus is locked in 👇</p>
+        <div class="reveal" id="reveal">
+          <div class="prize">
+            <span class="rp-eyebrow">Unlocked for you</span>
+            <span class="rp-main">2 FREE sessions<br>+ FREE diet consult</span>
+            <span class="rp-sub">Worth ₹4,000 · on a 10-session plan</span>
+          </div>
+          <canvas id="scratch"></canvas>
+          <span class="scratch-hint">👆 Scratch to reveal your bonus</span>
+        </div>
+
+        <p class="why center" style="justify-content:center;font-size:12.5px;margin-top:2px">
+          Confirm on WhatsApp to lock this bonus before your call.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- STICKY FOOTER -->
+  <div class="footer" id="footer">
+    <div class="slots-left hidden" id="slotsLeft"><span class="pulse"></span><span id="slotsText">Only 4 callback slots left today</span></div>
+    <button class="cta" id="mainCta">Check my eligibility
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="back-link hidden" id="backLink">← Back</button>
+  </div>
+
+  <p class="footnote">Shape U Clinic · Andheri · Malad · Mulund · Mumbai &nbsp;|&nbsp; Results vary per individual. Consult our doctors.</p>
+</div>
+
+<div class="confetti" id="confetti"></div>
+
+<script>
+/* =====================================================================
+   CONFIG — edit these before going live
+   ===================================================================== */
+const CONFIG = {
+  clinicName: "Shape U Clinic",
+
+  // WhatsApp number the lead will message (country code, digits only, NO +)
+  waNumber: "919000000000",
+
+  // Number shown to the lead to SAVE (this must be the number you actually
+  // call them from — a single dedicated caller-ID improves pickup a lot)
+  callNumberDisplay: "+91 90000 00000",
+  callNumberRaw: "+919000000000",
+
+  // Where leads are posted. Paste your Google Sheets Apps Script Web App URL.
+  // Leave "" to run in demo mode (no data is sent).
+  leadEndpoint: "",
+
+  // Offer
+  offerHours: 48
+};
+
+/* =====================================================================
+   STATE
+   ===================================================================== */
+const answers = { goal:"", goalPrice:"", intent:"", tier:"", clinic:"", slot:"", name:"", phone:"", whatsapp:true };
+let screenIdx = 0;
+const FORM_STEPS = 5; // screens 1..5 count toward "Step X of 5"
+
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const screens = $$('.screen');
+
+/* =====================================================================
+   NAVIGATION
+   ===================================================================== */
+function show(idx){
+  screens.forEach(s => s.classList.toggle('active', +s.dataset.screen === idx));
+  screenIdx = idx;
+  window.scrollTo({top:0, behavior:'instant' in window ? 'instant':'auto'});
+  updateChrome();
+}
+
+function updateChrome(){
+  const topbar = $('#topbar'), backLink = $('#backLink'), slots = $('#slotsLeft');
+
+  // progress + step counter for form screens (1..5)
+  if(screenIdx >= 1 && screenIdx <= 5){
+    topbar.classList.remove('hidden');
+    $('#stepCount').textContent = `Step ${screenIdx} of ${FORM_STEPS}`;
+    $('#progressFill').style.width = (screenIdx/FORM_STEPS*100) + '%';
+    backLink.classList.remove('hidden');
+  } else {
+    topbar.classList.add('hidden');
+    backLink.classList.add('hidden');
+  }
+
+  // scarcity nudge on the callback-slot screen
+  slots.classList.toggle('hidden', screenIdx !== 4);
+
+  // main CTA state
+  const cta = $('#mainCta');
+  cta.classList.remove('hidden');
+  if(screenIdx === 0){ setCta('Check my eligibility', true, false); cta.disabled = false; }
+  else if(screenIdx === 5){ setCta('Book my free consultation', true, false); validateContact(false); }
+  else if(screenIdx === 6){ setCta('Confirm on WhatsApp now', true, true); cta.disabled = false; }
+  else { setCta('Continue', true, false); cta.disabled = !groupAnswered(screenIdx); }
+}
+
+function setCta(label, showArrow, whatsapp){
+  const cta = $('#mainCta');
+  cta.classList.toggle('wa', !!whatsapp);
+  cta.innerHTML = whatsapp
+    ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2z"/></svg> ${label}`
+    : `${label} ${showArrow ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}`;
+}
+
+function groupAnswered(idx){
+  const map = {1:'goal',2:'intent',3:'clinic',4:'slot'};
+  return !!answers[map[idx]];
+}
+
+/* =====================================================================
+   OPTION SELECTION
+   ===================================================================== */
+$$('.options').forEach(group => {
+  group.addEventListener('click', e => {
+    const opt = e.target.closest('.opt');
+    if(!opt) return;
+    group.querySelectorAll('.opt').forEach(o => o.classList.remove('on'));
+    opt.classList.add('on');
+
+    const g = group.dataset.group;
+    if(g === 'goal'){ answers.goal = opt.dataset.value; answers.goalPrice = opt.dataset.price || ''; }
+    if(g === 'intent'){ answers.intent = opt.dataset.value; answers.tier = opt.dataset.tier || ''; }
+    if(g === 'clinic'){ answers.clinic = opt.dataset.value; }
+    if(g === 'slot'){ answers.slot = opt.dataset.value; }
+
+    $('#mainCta').disabled = false;
+    // gentle auto-advance so it feels fast (matches "minimal friction" intent)
+    clearTimeout(window._adv);
+    window._adv = setTimeout(() => { if(screenIdx>=1 && screenIdx<=4) next(); }, 260);
+  });
+});
+
+/* =====================================================================
+   WHATSAPP OPT-IN TOGGLE
+   ===================================================================== */
+const waOptin = $('#waOptin');
+function toggleWa(){ answers.whatsapp = !answers.whatsapp; waOptin.classList.toggle('on', answers.whatsapp); waOptin.setAttribute('aria-checked', answers.whatsapp); }
+waOptin.addEventListener('click', toggleWa);
+waOptin.addEventListener('keydown', e => { if(e.key===' '||e.key==='Enter'){ e.preventDefault(); toggleWa(); } });
+
+/* =====================================================================
+   CONTACT VALIDATION  (autofill defeated, manual entry enforced)
+   ===================================================================== */
+const phoneInp = $('#phone'), fnameInp = $('#fname');
+
+// strip non-digits live
+phoneInp.addEventListener('input', () => {
+  phoneInp.value = phoneInp.value.replace(/\D/g,'').slice(0,10);
+  validateContact(false);
+});
+fnameInp.addEventListener('input', () => validateContact(false));
+
+function validateContact(showErrors){
+  const name = fnameInp.value.trim();
+  const phone = phoneInp.value.trim();
+  const phoneOk = /^[6-9]\d{9}$/.test(phone);
+  const nameOk = name.length >= 2;
+
+  if(showErrors){
+    $('#fnameErr').classList.toggle('show', !nameOk);
+    fnameInp.classList.toggle('err', !nameOk);
+    $('#phoneErr').classList.toggle('show', !phoneOk);
+    phoneInp.classList.toggle('err', !phoneOk);
+  } else {
+    if(phoneOk){ phoneInp.classList.remove('err'); $('#phoneErr').classList.remove('show'); }
+    if(nameOk){ fnameInp.classList.remove('err'); $('#fnameErr').classList.remove('show'); }
+  }
+
+  if(screenIdx === 5) $('#mainCta').disabled = !(phoneOk && nameOk);
+  return phoneOk && nameOk;
+}
+
+/* =====================================================================
+   MAIN CTA HANDLER
+   ===================================================================== */
+$('#mainCta').addEventListener('click', () => {
+  if(screenIdx === 0){ next(); return; }
+  if(screenIdx >= 1 && screenIdx <= 4){ if(groupAnswered(screenIdx)) next(); return; }
+  if(screenIdx === 5){
+    if(!validateContact(true)) return;
+    answers.name = fnameInp.value.trim();
+    answers.phone = phoneInp.value.trim();
+    submitLead();
+    return;
+  }
+  if(screenIdx === 6){ openWhatsApp(); return; }
+});
+
+$('#backLink').addEventListener('click', () => { if(screenIdx>0) show(screenIdx-1); });
+
+function next(){ if(screenIdx < 6) show(screenIdx+1); }
+
+/* =====================================================================
+   SUBMIT → CONFIRMATION
+   ===================================================================== */
+function submitLead(){
+  const cta = $('#mainCta');
+  cta.disabled = true; cta.innerHTML = 'Booking your slot…';
+
+  const payload = {
+    ...answers,
+    source: 'landing_page',
+    lead_priority: answers.tier || 'warm',
+    fullPhone: '+91' + answers.phone,
+    submittedAt: new Date().toISOString(),
+    utm: Object.fromEntries(new URLSearchParams(location.search).entries())
+  };
+
+  const done = () => { fillConfirmation(); show(6); startConfetti(); };
+
+  if(CONFIG.leadEndpoint){
+    fetch(CONFIG.leadEndpoint, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'}, // avoids CORS preflight for Apps Script
+      body: JSON.stringify(payload)
+    }).then(done).catch(done);
+  } else {
+    console.log('[DEMO] Lead captured →', payload);
+    setTimeout(done, 550);
+  }
+}
+
+function fillConfirmation(){
+  $('#doneName').textContent = answers.name || 'friend';
+  $('#doneGoal').textContent = answers.goal ? ('lose ' + answers.goal.replace(/^lose\s*/i,'')) : 'reach your goal';
+  $('#doneClinic').textContent = answers.clinic ? (answers.clinic + ' clinic') : 'our clinic';
+  $('#doneSlot').textContent = answers.slot === 'Call me now' ? 'within ~10 minutes' : ('today, ' + answers.slot);
+  $('#callNumDisplay').textContent = CONFIG.callNumberDisplay;
+}
+
+/* =====================================================================
+   SAVE CONTACT (vCard) — helps the lead recognise & answer the call
+   ===================================================================== */
+$('#saveContactBtn').addEventListener('click', () => {
+  const vcard =
+`BEGIN:VCARD
+VERSION:3.0
+N:Clinic;Shape U;;;
+FN:Shape U Clinic (Weight Loss)
+ORG:Shape U Clinic
+TEL;TYPE=CELL:${CONFIG.callNumberRaw}
+NOTE:Your weight-loss consultation call
+END:VCARD`;
+  const blob = new Blob([vcard], {type:'text/vcard'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'ShapeU-Clinic.vcf';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+  const btn = $('#saveContactBtn');
+  btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Saved';
+});
+
+/* =====================================================================
+   WHATSAPP DEEP LINK — pulls the lead into a reachable channel
+   ===================================================================== */
+function openWhatsApp(){
+  const msg =
+`Hi ${CONFIG.clinicName}! I just booked a consultation on your website.
+• Name: ${answers.name}
+• Goal: ${answers.goal}
+• Clinic: ${answers.clinic}
+• Preferred time: ${answers.slot}
+Please confirm my 2 FREE sessions.`;
+  const url = `https://wa.me/${CONFIG.waNumber}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+
+/* =====================================================================
+   SCRATCH CARD
+   ===================================================================== */
+function initScratch(){
+  const canvas = $('#scratch');
+  const reveal = $('#reveal');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const rect = reveal.getBoundingClientRect();
+  const w = rect.width, h = rect.height;
+  canvas.width = w*dpr; canvas.height = h*dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+
+  // foil coating
+  const grad = ctx.createLinearGradient(0,0,w,h);
+  grad.addColorStop(0,'#C1272D'); grad.addColorStop(.5,'#E0574B'); grad.addColorStop(1,'#921B20');
+  ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
+  ctx.fillStyle = 'rgba(255,255,255,.14)';
+  for(let i=0;i<40;i++){ ctx.beginPath(); ctx.arc(Math.random()*w, Math.random()*h, Math.random()*2, 0, 7); ctx.fill(); }
+  ctx.font = '700 14px "Plus Jakarta Sans", sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center';
+  ctx.fillText('YOUR BONUS', w/2, h/2 - 8);
+  ctx.font = '600 11px Inter, sans-serif';
+  ctx.fillText('scratch to reveal', w/2, h/2 + 12);
+
+  ctx.globalCompositeOperation = 'destination-out';
+  let drawing = false, scratched = false, revealed = false;
+
+  const pos = e => {
+    const r = canvas.getBoundingClientRect();
+    const p = e.touches ? e.touches[0] : e;
+    return { x: p.clientX - r.left, y: p.clientY - r.top };
+  };
+  const scratch = e => {
+    if(!drawing) return;
+    const {x,y} = pos(e);
+    ctx.beginPath(); ctx.arc(x,y,22,0,7); ctx.fill();
+    scratched = true;
+    if(!revealed) checkReveal(ctx,w,h,dpr);
+  };
+  const start = e => { drawing = true; reveal.classList.add('scratching'); scratch(e); };
+  const end = () => { drawing = false; };
+
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', scratch);
+  window.addEventListener('mouseup', end);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); start(e); }, {passive:false});
+  canvas.addEventListener('touchmove', e => { e.preventDefault(); scratch(e); }, {passive:false});
+  canvas.addEventListener('touchend', end);
+
+  function checkReveal(ctx,w,h,dpr){
+    const img = ctx.getImageData(0,0,w*dpr,h*dpr).data;
+    let clear = 0;
+    for(let i=3;i<img.length;i+=40) if(img[i]===0) clear++;
+    if(clear/(img.length/40) > 0.45){ fullReveal(); }
+  }
+  function fullReveal(){
+    if(revealed) return; revealed = true;
+    canvas.style.transition = 'opacity .45s';
+    canvas.style.opacity = '0';
+    reveal.classList.add('done');
+    startConfetti();
+    setTimeout(() => canvas.remove(), 500);
+  }
+}
+
+/* =====================================================================
+   CONFETTI (light, brand colours)
+   ===================================================================== */
+function startConfetti(){
+  const layer = $('#confetti');
+  layer.classList.add('go'); layer.innerHTML = '';
+  const colors = ['#C1272D','#2E8B3D','#FFD24C','#E0574B'];
+  for(let i=0;i<70;i++){
+    const p = document.createElement('i');
+    const size = 6 + Math.random()*7;
+    p.style.cssText = `position:absolute;top:-20px;left:${Math.random()*100}%;
+      width:${size}px;height:${size*0.5}px;background:${colors[i%4]};
+      opacity:.9;border-radius:2px;transform:rotate(${Math.random()*360}deg);
+      animation:fall ${1.6+Math.random()*1.4}s ${Math.random()*.4}s ease-in forwards;`;
+    layer.appendChild(p);
+  }
+  setTimeout(() => layer.classList.remove('go'), 3200);
+}
+const style = document.createElement('style');
+style.textContent = `@keyframes fall{to{top:110%;transform:translateX(${(Math.random()-.5)*60}px) rotate(720deg);opacity:0}}`;
+document.head.appendChild(style);
+
+/* =====================================================================
+   OFFER COUNTDOWN + SCARCITY
+   ===================================================================== */
+(function countdown(){
+  let total = CONFIG.offerHours*3600 - Math.floor((Date.now()/1000)%3600);
+  const el = $('#offerTimer');
+  setInterval(() => {
+    total = Math.max(0,total-1);
+    const hh = String(Math.floor(total/3600)).padStart(2,'0');
+    const mm = String(Math.floor(total%3600/60)).padStart(2,'0');
+    const ss = String(total%60).padStart(2,'0');
+    if(el) el.textContent = `${hh}:${mm}:${ss}`;
+  },1000);
+})();
+
+// believable, gently-decreasing slot counter (per session)
+(function slots(){
+  let n = 4 + Math.floor(Math.random()*3); // 4–6
+  $('#slotsText').textContent = `Only ${n} callback slots left today`;
+})();
+
+/* =====================================================================
+   BOOT
+   ===================================================================== */
+// build scratch card only when the confirmation screen is first shown
+const _origShow = show;
+show = function(idx){ _origShow(idx); if(idx===6) setTimeout(initScratch, 120); };
+
+show(0);
+</script>
+</body>
+</html>
