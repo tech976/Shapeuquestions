@@ -10,7 +10,7 @@
 /* ── Settings ──────────────────────────────────────────────────────────── */
 
 // Tab the leads are written to. Created automatically if missing.
-const SHEET_NAME = 'Leads';
+const SHEET_NAME = 'Question LP';
 
 // Timezone used for the timestamp column.
 const TIMEZONE = 'Asia/Kolkata';

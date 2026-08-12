@@ -11,8 +11,10 @@ Apps Script that receives it and the URL to point the page at.
    and save.
 
 Don't create the script standalone from script.google.com — it must be created
-**from inside the sheet** so it's bound to it. The tab and header row are
-created automatically on the first lead.
+**from inside the sheet** so it's bound to it. A tab named **Question LP** and
+its header row are created automatically on the first lead — you don't need to
+set them up by hand. To use a different tab name, change `SHEET_NAME` at the top
+of `Code.gs`.
 
 ## 2. Deploy it as a web app
 
