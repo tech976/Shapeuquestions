@@ -16,7 +16,7 @@
 
 // The spreadsheet to write into — the long id in its URL:
 // https://docs.google.com/spreadsheets/d/THIS_PART_HERE/edit
-const SPREADSHEET_ID = 'PASTE_YOUR_SPREADSHEET_ID_HERE';
+const SPREADSHEET_ID = '1VwgJmRAQ6N4v4g-WKZtOJVp62_iisCgX7FKHMOzVjRQ';
 
 // Tab this LP's leads go to. Created automatically if missing, and kept
 // separate from the tab the other landing page writes to.
