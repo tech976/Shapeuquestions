@@ -173,7 +173,15 @@ main{flex:1;position:relative;overflow:hidden}
 .kg-plan{text-align:center;font-size:13.5px;color:var(--muted);font-weight:500;margin:18px 0 0}
 .kg-plan b{color:var(--ink);font-weight:800}
 
-/* ---------- ABOUT-YOU CARD (screen 2) ---------- */
+/* Second heading within a screen — smaller than .q-title, with a rule above
+   it so the two halves of the step read as separate blocks. */
+.sec-title{
+  font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:19px;
+  line-height:1.2;letter-spacing:-.02em;margin:24px 0 5px;
+  padding-top:22px;border-top:1px solid var(--line);
+}
+
+/* ---------- ABOUT-YOU CARD (screen 1, lower half) ---------- */
 .about-card{
   background:var(--card);border:1.5px solid var(--line);border-radius:var(--r-lg);
   box-shadow:var(--shadow-soft);overflow:hidden;
@@ -432,7 +440,7 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       </div>
     </section>
 
-    <!-- ============ SCREEN 1 : GOAL ============ -->
+    <!-- ============ SCREEN 1 : GOAL + ABOUT YOU ============ -->
     <section class="screen" data-screen="1">
       <p class="q-kicker">Your goal</p>
       <h2 class="q-title">How much weight would you like to <span class="q-hl">lose</span> in 6 months?</h2>
@@ -453,12 +461,8 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       </div>
 
       <p class="kg-plan">Plans from <b id="kgPrice">₹30,000</b></p>
-    </section>
 
-    <!-- ============ SCREEN 2 : ABOUT YOU ============ -->
-    <section class="screen" data-screen="2">
-      <p class="q-kicker">About you</p>
-      <h2 class="q-title">Let’s predict the weight loss we can <span class="q-hl">deliver</span> for you</h2>
+      <h3 class="sec-title">Let’s predict the weight loss we can <span class="q-hl">deliver</span> for you</h3>
       <p class="q-sub">Quick details, personalised plan in seconds.</p>
 
       <div class="about-card">
@@ -506,8 +510,8 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       </p>
     </section>
 
-    <!-- ============ SCREEN 3 : INTENT / TIMING ============ -->
-    <section class="screen" data-screen="3">
+    <!-- ============ SCREEN 2 : INTENT / TIMING ============ -->
+    <section class="screen" data-screen="2">
       <p class="q-kicker">Timeline</p>
       <h2 class="q-title">How soon do you want to start?</h2>
       <p class="q-sub">This helps us hold the right slot for you. Be honest — no pressure.</p>
@@ -530,8 +534,8 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       </div>
     </section>
 
-    <!-- ============ SCREEN 4 : CLINIC ============ -->
-    <section class="screen" data-screen="4">
+    <!-- ============ SCREEN 3 : CLINIC ============ -->
+    <section class="screen" data-screen="3">
       <p class="q-kicker">Location</p>
       <h2 class="q-title">Which clinic is nearest to you?</h2>
       <p class="q-sub">4 branches across Mumbai. Pick the most convenient one.</p>
@@ -559,8 +563,8 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       </div>
     </section>
 
-    <!-- ============ SCREEN 5 : CALLBACK SLOT ============ -->
-    <section class="screen" data-screen="5">
+    <!-- ============ SCREEN 4 : CALLBACK SLOT ============ -->
+    <section class="screen" data-screen="4">
       <p class="q-kicker">Your callback</p>
       <h2 class="q-title">When should our specialist call you?</h2>
       <p class="q-sub">You’ll get <b>one call from a single number</b> at the time you pick. Choose a window you can actually take the call.</p>
@@ -578,8 +582,8 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       </div>
     </section>
 
-    <!-- ============ SCREEN 6 : CONTACT ============ -->
-    <section class="screen" data-screen="6">
+    <!-- ============ SCREEN 5 : CONTACT ============ -->
+    <section class="screen" data-screen="5">
       <p class="q-kicker">Last step</p>
       <h2 class="q-title">Where should we confirm your slot?</h2>
       <p class="q-sub">Enter your own number so we call the right person. We confirm on WhatsApp too.</p>
@@ -631,8 +635,8 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       </form>
     </section>
 
-    <!-- ============ SCREEN 7 : CONFIRMATION ============ -->
-    <section class="screen" data-screen="7">
+    <!-- ============ SCREEN 6 : CONFIRMATION ============ -->
+    <section class="screen" data-screen="6">
       <div class="confirm-wrap">
         <div class="check-burst">
           <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -733,8 +737,8 @@ const answers = {
 let screenIdx = 0;
 
 // Named so a screen can be inserted without hunting down bare numbers.
-const S = { HERO:0, GOAL:1, ABOUT:2, INTENT:3, CLINIC:4, SLOT:5, CONTACT:6, DONE:7 };
-const FORM_STEPS = S.CONTACT; // screens 1..6 count toward "Step X of 6"
+const S = { HERO:0, GOAL:1, INTENT:2, CLINIC:3, SLOT:4, CONTACT:5, DONE:6 };
+const FORM_STEPS = S.CONTACT; // screens 1..5 count toward "Step X of 5"
 
 const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
@@ -771,7 +775,7 @@ function updateChrome(){
   const cta = $('#mainCta');
   cta.classList.remove('hidden');
   if(screenIdx === S.HERO){ setCta('Check my eligibility', true, false); cta.disabled = false; }
-  else if(screenIdx === S.ABOUT){ setCta('Show my results', true, false); cta.disabled = false; }
+  else if(screenIdx === S.GOAL){ setCta('Show my results', true, false); cta.disabled = false; }
   else if(screenIdx === S.CONTACT){ setCta('Book my free consultation', true, false); validateContact(false); }
   else if(screenIdx === S.DONE){ setCta('Confirm on WhatsApp now', true, true); cta.disabled = false; }
   else { setCta('Continue', true, false); cta.disabled = !groupAnswered(screenIdx); }
@@ -858,7 +862,7 @@ $('#kgChips').addEventListener('click', e => {
 setKg(10);
 
 /* =====================================================================
-   ABOUT-YOU STEPPERS (screen 2)
+   ABOUT-YOU STEPPERS (screen 1, lower half)
    ===================================================================== */
 $$('.stepper').forEach(st => {
   const min = +st.dataset.min, max = +st.dataset.max;
