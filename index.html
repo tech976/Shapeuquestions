@@ -621,10 +621,7 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
           </div>
         </div>
 
-        <p class="bmi-why" id="bmiWhy">
-          These are causes, not character flaws — and each one is treatable. Our doctors
-          find which is driving <b>your</b> weight gain, then build the plan around it.
-        </p>
+        <p class="bmi-why" id="bmiWhy">All treatable — once we know which one is <b>yours</b>.</p>
 
         <button class="bmi-cta" type="button" id="bmiCta">
           Find my cause &amp; start losing
@@ -996,17 +993,17 @@ $$('.stepper').forEach(st => {
 // change the thresholds in BMI_BANDS — nothing else needs touching.
 const BMI_BANDS = [
   { max:18.5, name:'Underweight', color:'#4A9BD1',
-    linked:['🍽️ Low muscle reserve','🐢 Slow metabolism','🩺 Nutrient gaps'],
-    lead:'Commonly seen alongside:' },
+    linked:['🐢 Slow metabolism','🩺 Nutrient gaps'],
+    lead:'Often linked with:' },
   { max:25,   name:'Normal',      color:'#2E8B3D',
-    linked:['💪 Good baseline','🎯 Easier to maintain','🩺 Lower risk'],
-    lead:'What this usually means:' },
+    linked:['💪 Good baseline','🎯 Easy to maintain'],
+    lead:'What this means:' },
   { max:30,   name:'Overweight',  color:'#E8A33D',
-    linked:['🩸 Early insulin resistance','🔥 Low-grade inflammation','🐢 Metabolic slowdown','🍽️ Stubborn cravings'],
-    lead:'Commonly linked with:' },
+    linked:['🩸 Insulin resistance','🔥 Inflammation','🐢 Slow metabolism'],
+    lead:'Often linked with:' },
   { max:Infinity, name:'Obese',   color:'#C1272D',
-    linked:['🩸 Insulin resistance','🔥 Chronic inflammation','🐢 Metabolic slowdown','🍽️ Hormonal cravings'],
-    lead:'Commonly linked with:' },
+    linked:['🩸 Insulin resistance','🔥 Inflammation','🐢 Slow metabolism'],
+    lead:'Often linked with:' },
 ];
 
 const BMI_SCALE_MIN = 15, BMI_SCALE_MAX = 40;
