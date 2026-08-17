@@ -35,6 +35,10 @@
 }
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+/* Kills double-tap-to-zoom on every control. iOS Safari ignores the
+   user-scalable=no in the viewport meta, so this is what actually stops the
+   screen jumping when someone taps +/− quickly. */
+button,.opt,.kg-chip,.seg-btn,.st-btn,.kg-btn{touch-action:manipulation}
 html,body{margin:0;padding:0}
 body{
   font-family:"Inter",system-ui,-apple-system,sans-serif;
@@ -924,6 +928,28 @@ $$('.options').forEach(group => {
 /* =====================================================================
    WEIGHT-GOAL DIAL (screen 1)
    ===================================================================== */
+// Press-and-hold to run a stepper, so nobody has to tap 20 times to reach an
+// age of 45. Keyboard activation still gets a single step.
+function holdRepeat(btn, step){
+  let delay = null, timer = null, viaPointer = false;
+  const stop = () => { clearTimeout(delay); clearInterval(timer); delay = timer = null; };
+
+  btn.addEventListener('pointerdown', e => {
+    if(btn.disabled) return;
+    e.preventDefault();
+    viaPointer = true;
+    step();
+    delay = setTimeout(() => { timer = setInterval(() => btn.disabled ? stop() : step(), 90); }, 420);
+  });
+  ['pointerup','pointercancel','pointerleave'].forEach(ev => btn.addEventListener(ev, stop));
+
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    if(!viaPointer) step();   // Enter/Space, which fires no pointer events
+    viaPointer = false;
+  });
+}
+
 const KG_MIN = 3, KG_MAX = 25;
 
 // Same three price tiers the old card layout used, so the sheet keeps
@@ -943,8 +969,8 @@ function setKg(kg){
   $('#kgPlus').disabled  = topped;
 }
 
-$('#kgMinus').addEventListener('click', () => setKg(answers.targetKg - 1));
-$('#kgPlus') .addEventListener('click', () => setKg(answers.targetKg + 1));
+holdRepeat($('#kgMinus'), () => setKg(answers.targetKg - 1));
+holdRepeat($('#kgPlus'),  () => setKg(answers.targetKg + 1));
 $('#kgChips').addEventListener('click', e => {
   const chip = e.target.closest('.kg-chip');
   if(chip) setKg(+chip.dataset.kg);
@@ -969,10 +995,8 @@ $$('.stepper').forEach(st => {
     plus.disabled  = v >= max;
   };
 
-  st.addEventListener('click', e => {
-    const btn = e.target.closest('.st-btn');
-    if(btn) set(+st.dataset.value + (+btn.dataset.d));
-  });
+  holdRepeat(minus, () => set(+st.dataset.value - 1));
+  holdRepeat(plus,  () => set(+st.dataset.value + 1));
   set(+st.dataset.value);
 });
 
