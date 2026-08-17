@@ -370,7 +370,7 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
           <span class="txt"><b>Lose up to 5 kg</b><small>Plans from ₹20,000</small></span>
           <span class="radio"><i></i></span>
         </button>
-        <button class="opt" data-value="Lose up to 10 kg" data-price="₹30,000">
+        <button class="opt on" data-value="Lose up to 10 kg" data-price="₹30,000">
           <span class="lead-ico">🔥</span>
           <span class="txt"><b>Lose up to 10 kg <span class="badge-best">Most chosen</span></b><small>Plans from ₹30,000</small></span>
           <span class="radio"><i></i></span>
@@ -657,6 +657,14 @@ function groupAnswered(idx){
 /* =====================================================================
    OPTION SELECTION
    ===================================================================== */
+function recordAnswer(group, opt){
+  const g = group.dataset.group;
+  if(g === 'goal'){ answers.goal = opt.dataset.value; answers.goalPrice = opt.dataset.price || ''; }
+  if(g === 'intent'){ answers.intent = opt.dataset.value; answers.tier = opt.dataset.tier || ''; }
+  if(g === 'clinic'){ answers.clinic = opt.dataset.value; }
+  if(g === 'slot'){ answers.slot = opt.dataset.value; }
+}
+
 $$('.options').forEach(group => {
   group.addEventListener('click', e => {
     const opt = e.target.closest('.opt');
@@ -664,17 +672,22 @@ $$('.options').forEach(group => {
     group.querySelectorAll('.opt').forEach(o => o.classList.remove('on'));
     opt.classList.add('on');
 
-    const g = group.dataset.group;
-    if(g === 'goal'){ answers.goal = opt.dataset.value; answers.goalPrice = opt.dataset.price || ''; }
-    if(g === 'intent'){ answers.intent = opt.dataset.value; answers.tier = opt.dataset.tier || ''; }
-    if(g === 'clinic'){ answers.clinic = opt.dataset.value; }
-    if(g === 'slot'){ answers.slot = opt.dataset.value; }
+    recordAnswer(group, opt);
 
     $('#mainCta').disabled = false;
     // gentle auto-advance so it feels fast (matches "minimal friction" intent)
     clearTimeout(window._adv);
     window._adv = setTimeout(() => { if(screenIdx>=1 && screenIdx<=4) next(); }, 260);
   });
+});
+
+// An option carrying .on in the markup is a real pre-filled answer, not just a
+// highlight — seed it here so the markup stays the single source of truth and
+// Continue is live the moment the screen opens. No auto-advance: the lead must
+// still act before moving on.
+$$('.options').forEach(group => {
+  const pre = group.querySelector('.opt.on');
+  if(pre) recordAnswer(group, pre);
 });
 
 /* =====================================================================
