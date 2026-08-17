@@ -141,6 +141,83 @@ main{flex:1;position:relative;overflow:hidden}
 .q-kicker{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:2px 0 10px}
 .q-title{font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:23px;line-height:1.16;letter-spacing:-.02em;margin:0 0 5px}
 .q-sub{font-size:13.5px;color:var(--muted);margin:0 0 20px;font-weight:500}
+.q-hl{color:var(--red)}
+
+/* ---------- WEIGHT-GOAL DIAL (screen 1) ---------- */
+.kg-dial{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--red);border-radius:99px;padding:10px 12px;
+  box-shadow:var(--shadow);margin:6px 0 18px;
+}
+.kg-btn{
+  width:48px;height:48px;flex:none;border:0;border-radius:50%;cursor:pointer;
+  background:rgba(255,255,255,.18);color:#fff;
+  font-size:26px;font-weight:700;line-height:1;font-family:inherit;
+  display:grid;place-items:center;transition:background .18s, transform .12s, opacity .18s;
+}
+.kg-btn:hover:not(:disabled){background:rgba(255,255,255,.3)}
+.kg-btn:active:not(:disabled){transform:scale(.92)}
+.kg-btn:disabled{opacity:.35;cursor:not-allowed}
+.kg-val{display:flex;align-items:baseline;gap:7px;color:#fff}
+.kg-val b{font-family:"Plus Jakarta Sans",sans-serif;font-size:40px;font-weight:800;letter-spacing:-.03em;color:#FFD24C}
+.kg-val span{font-size:17px;font-weight:700}
+
+.kg-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.kg-chip{
+  flex:1 1 auto;min-width:62px;cursor:pointer;font-family:inherit;
+  background:var(--card);border:1.5px solid var(--line);border-radius:99px;
+  padding:10px 6px;font-size:13.5px;font-weight:700;color:var(--ink);
+  transition:border-color .18s, background .18s, color .18s, transform .12s;
+}
+.kg-chip:active{transform:scale(.95)}
+.kg-chip.on{border-color:var(--red);background:#fffaf9;color:var(--red)}
+.kg-plan{text-align:center;font-size:13.5px;color:var(--muted);font-weight:500;margin:18px 0 0}
+.kg-plan b{color:var(--ink);font-weight:800}
+
+/* ---------- ABOUT-YOU CARD (screen 2) ---------- */
+.about-card{
+  background:var(--card);border:1.5px solid var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow-soft);overflow:hidden;
+}
+.about-row{
+  display:flex;align-items:center;gap:12px;padding:14px 16px;
+  border-bottom:1px solid var(--line-2);
+}
+.about-row:last-child{border-bottom:0}
+.about-ico{
+  width:38px;height:38px;flex:none;border-radius:11px;
+  background:#fdf3f2;display:grid;place-items:center;font-size:18px;
+}
+.about-lbl{font-size:15px;font-weight:700;color:var(--ink);margin-right:auto}
+
+.stepper{display:flex;align-items:center;gap:12px}
+.st-btn{
+  width:36px;height:36px;flex:none;border-radius:50%;cursor:pointer;
+  border:1.5px solid var(--line);background:var(--card);color:var(--ink);
+  font-size:20px;font-weight:700;line-height:1;font-family:inherit;
+  display:grid;place-items:center;transition:border-color .18s, background .18s, transform .12s, opacity .18s;
+}
+.st-btn:hover:not(:disabled){border-color:var(--red);color:var(--red)}
+.st-btn:active:not(:disabled){transform:scale(.9)}
+.st-btn:disabled{opacity:.3;cursor:not-allowed}
+.st-val{
+  font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:19px;
+  color:var(--red);min-width:52px;text-align:center;letter-spacing:-.01em;
+}
+.st-val small{font-size:11.5px;font-weight:700;color:var(--muted);margin-left:2px}
+
+.about-sel{
+  font-family:inherit;font-size:14.5px;font-weight:700;color:var(--ink);
+  background:var(--card);border:1.5px solid var(--line);border-radius:99px;
+  padding:9px 34px 9px 16px;cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2317171F' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 13px center;
+}
+.about-sel:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 4px rgba(193,39,45,.08)}
+.secure-note{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  font-size:12.5px;font-weight:600;color:var(--green);margin:14px 0 0;
+}
 
 .options{display:flex;flex-direction:column;gap:11px}
 .opt{
@@ -362,29 +439,79 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
     <!-- ============ SCREEN 1 : GOAL ============ -->
     <section class="screen" data-screen="1">
       <p class="q-kicker">Your goal</p>
-      <h2 class="q-title">How much weight do you want to lose?</h2>
+      <h2 class="q-title">How much weight would you like to <span class="q-hl">lose</span> in 6 months?</h2>
       <p class="q-sub">We’ll build a plan and price around your exact target.</p>
-      <div class="options" data-group="goal">
-        <button class="opt" data-value="Lose up to 5 kg" data-price="₹20,000">
-          <span class="lead-ico">🎯</span>
-          <span class="txt"><b>Lose up to 5 kg</b><small>Plans from ₹20,000</small></span>
-          <span class="radio"><i></i></span>
-        </button>
-        <button class="opt on" data-value="Lose up to 10 kg" data-price="₹30,000">
-          <span class="lead-ico">🔥</span>
-          <span class="txt"><b>Lose up to 10 kg <span class="badge-best">Most chosen</span></b><small>Plans from ₹30,000</small></span>
-          <span class="radio"><i></i></span>
-        </button>
-        <button class="opt" data-value="Lose 10 kg or more" data-price="₹30,000+">
-          <span class="lead-ico">💪</span>
-          <span class="txt"><b>Lose 10 kg or more</b><small>Custom plan · ₹30,000+</small></span>
-          <span class="radio"><i></i></span>
-        </button>
+
+      <div class="kg-dial">
+        <button class="kg-btn" id="kgMinus" type="button" aria-label="Decrease target">−</button>
+        <div class="kg-val"><b id="kgValue">10</b><span>Kgs</span></div>
+        <button class="kg-btn" id="kgPlus" type="button" aria-label="Increase target">+</button>
       </div>
+
+      <div class="kg-chips" id="kgChips">
+        <button class="kg-chip" type="button" data-kg="5">5 kg</button>
+        <button class="kg-chip on" type="button" data-kg="10">10 kg</button>
+        <button class="kg-chip" type="button" data-kg="15">15 kg</button>
+        <button class="kg-chip" type="button" data-kg="20">20 kg</button>
+        <button class="kg-chip" type="button" data-kg="25">25+ kg</button>
+      </div>
+
+      <p class="kg-plan">Plans from <b id="kgPrice">₹30,000</b></p>
     </section>
 
-    <!-- ============ SCREEN 2 : INTENT / TIMING ============ -->
+    <!-- ============ SCREEN 2 : ABOUT YOU ============ -->
     <section class="screen" data-screen="2">
+      <p class="q-kicker">About you</p>
+      <h2 class="q-title">Let’s predict the weight loss we can <span class="q-hl">deliver</span> for you</h2>
+      <p class="q-sub">Quick details, personalised plan in seconds.</p>
+
+      <div class="about-card">
+        <div class="about-row">
+          <span class="about-ico">🕐</span>
+          <span class="about-lbl">Age</span>
+          <div class="stepper" data-field="age" data-min="16" data-max="80" data-value="25">
+            <button class="st-btn" type="button" data-d="-1" aria-label="Decrease age">−</button>
+            <span class="st-val"></span>
+            <button class="st-btn" type="button" data-d="1" aria-label="Increase age">+</button>
+          </div>
+        </div>
+        <div class="about-row">
+          <span class="about-ico">⚖️</span>
+          <span class="about-lbl">Weight</span>
+          <div class="stepper" data-field="weight" data-min="35" data-max="200" data-unit="kg" data-value="65">
+            <button class="st-btn" type="button" data-d="-1" aria-label="Decrease weight">−</button>
+            <span class="st-val"></span>
+            <button class="st-btn" type="button" data-d="1" aria-label="Increase weight">+</button>
+          </div>
+        </div>
+        <div class="about-row">
+          <span class="about-ico">📏</span>
+          <span class="about-lbl">Height</span>
+          <div class="stepper" data-field="height" data-min="120" data-max="210" data-unit="cm" data-value="160">
+            <button class="st-btn" type="button" data-d="-1" aria-label="Decrease height">−</button>
+            <span class="st-val"></span>
+            <button class="st-btn" type="button" data-d="1" aria-label="Increase height">+</button>
+          </div>
+        </div>
+        <div class="about-row">
+          <span class="about-ico">👤</span>
+          <span class="about-lbl">Gender</span>
+          <select class="about-sel" id="genderSel" aria-label="Gender">
+            <option>Female</option>
+            <option>Male</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="secure-note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#2E8B3D" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        Your data is 100% secure &amp; private
+      </p>
+    </section>
+
+    <!-- ============ SCREEN 3 : INTENT / TIMING ============ -->
+    <section class="screen" data-screen="3">
       <p class="q-kicker">Timeline</p>
       <h2 class="q-title">How soon do you want to start?</h2>
       <p class="q-sub">This helps us hold the right slot for you. Be honest — no pressure.</p>
@@ -407,8 +534,8 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       </div>
     </section>
 
-    <!-- ============ SCREEN 3 : CLINIC ============ -->
-    <section class="screen" data-screen="3">
+    <!-- ============ SCREEN 4 : CLINIC ============ -->
+    <section class="screen" data-screen="4">
       <p class="q-kicker">Location</p>
       <h2 class="q-title">Which clinic is nearest to you?</h2>
       <p class="q-sub">4 branches across Mumbai. Pick the most convenient one.</p>
@@ -436,8 +563,8 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       </div>
     </section>
 
-    <!-- ============ SCREEN 4 : CALLBACK SLOT ============ -->
-    <section class="screen" data-screen="4">
+    <!-- ============ SCREEN 5 : CALLBACK SLOT ============ -->
+    <section class="screen" data-screen="5">
       <p class="q-kicker">Your callback</p>
       <h2 class="q-title">When should our specialist call you?</h2>
       <p class="q-sub">You’ll get <b>one call from a single number</b> at the time you pick. Choose a window you can actually take the call.</p>
@@ -455,8 +582,8 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       </div>
     </section>
 
-    <!-- ============ SCREEN 5 : CONTACT ============ -->
-    <section class="screen" data-screen="5">
+    <!-- ============ SCREEN 6 : CONTACT ============ -->
+    <section class="screen" data-screen="6">
       <p class="q-kicker">Last step</p>
       <h2 class="q-title">Where should we confirm your slot?</h2>
       <p class="q-sub">Enter your own number so we call the right person. We confirm on WhatsApp too.</p>
@@ -508,8 +635,8 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       </form>
     </section>
 
-    <!-- ============ SCREEN 6 : CONFIRMATION ============ -->
-    <section class="screen" data-screen="6">
+    <!-- ============ SCREEN 7 : CONFIRMATION ============ -->
+    <section class="screen" data-screen="7">
       <div class="confirm-wrap">
         <div class="check-burst">
           <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -602,9 +729,16 @@ const CONFIG = {
 /* =====================================================================
    STATE
    ===================================================================== */
-const answers = { goal:"", goalPrice:"", intent:"", tier:"", clinic:"", slot:"", name:"", phone:"", whatsapp:true };
+const answers = {
+  goal:"", goalPrice:"", targetKg:0,
+  age:0, weight:0, height:0, gender:"",
+  intent:"", tier:"", clinic:"", slot:"", name:"", phone:"", whatsapp:true
+};
 let screenIdx = 0;
-const FORM_STEPS = 5; // screens 1..5 count toward "Step X of 5"
+
+// Named so a screen can be inserted without hunting down bare numbers.
+const S = { HERO:0, GOAL:1, ABOUT:2, INTENT:3, CLINIC:4, SLOT:5, CONTACT:6, DONE:7 };
+const FORM_STEPS = S.CONTACT; // screens 1..6 count toward "Step X of 6"
 
 const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
@@ -623,8 +757,8 @@ function show(idx){
 function updateChrome(){
   const topbar = $('#topbar'), backLink = $('#backLink'), slots = $('#slotsLeft');
 
-  // progress + step counter for form screens (1..5)
-  if(screenIdx >= 1 && screenIdx <= 5){
+  // progress + step counter for form screens (1..6)
+  if(screenIdx >= S.GOAL && screenIdx <= S.CONTACT){
     topbar.classList.remove('hidden');
     $('#stepCount').textContent = `Step ${screenIdx} of ${FORM_STEPS}`;
     $('#progressFill').style.width = (screenIdx/FORM_STEPS*100) + '%';
@@ -635,14 +769,15 @@ function updateChrome(){
   }
 
   // scarcity nudge on the callback-slot screen
-  slots.classList.toggle('hidden', screenIdx !== 4);
+  slots.classList.toggle('hidden', screenIdx !== S.SLOT);
 
   // main CTA state
   const cta = $('#mainCta');
   cta.classList.remove('hidden');
-  if(screenIdx === 0){ setCta('Check my eligibility', true, false); cta.disabled = false; }
-  else if(screenIdx === 5){ setCta('Book my free consultation', true, false); validateContact(false); }
-  else if(screenIdx === 6){ setCta('Confirm on WhatsApp now', true, true); cta.disabled = false; }
+  if(screenIdx === S.HERO){ setCta('Check my eligibility', true, false); cta.disabled = false; }
+  else if(screenIdx === S.ABOUT){ setCta('Show my results', true, false); cta.disabled = false; }
+  else if(screenIdx === S.CONTACT){ setCta('Book my free consultation', true, false); validateContact(false); }
+  else if(screenIdx === S.DONE){ setCta('Confirm on WhatsApp now', true, true); cta.disabled = false; }
   else { setCta('Continue', true, false); cta.disabled = !groupAnswered(screenIdx); }
 }
 
@@ -654,9 +789,11 @@ function setCta(label, showArrow, whatsapp){
     : `${label} ${showArrow ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}`;
 }
 
+// Screens 1 and 2 are dial/stepper based and always hold a value, so only the
+// tap-to-choose screens can be unanswered.
 function groupAnswered(idx){
-  const map = {1:'goal',2:'intent',3:'clinic',4:'slot'};
-  return !!answers[map[idx]];
+  const map = {[S.INTENT]:'intent', [S.CLINIC]:'clinic', [S.SLOT]:'slot'};
+  return map[idx] ? !!answers[map[idx]] : true;
 }
 
 /* =====================================================================
@@ -664,7 +801,6 @@ function groupAnswered(idx){
    ===================================================================== */
 function recordAnswer(group, opt){
   const g = group.dataset.group;
-  if(g === 'goal'){ answers.goal = opt.dataset.value; answers.goalPrice = opt.dataset.price || ''; }
   if(g === 'intent'){ answers.intent = opt.dataset.value; answers.tier = opt.dataset.tier || ''; }
   if(g === 'clinic'){ answers.clinic = opt.dataset.value; }
   if(g === 'slot'){ answers.slot = opt.dataset.value; }
@@ -682,7 +818,7 @@ $$('.options').forEach(group => {
     $('#mainCta').disabled = false;
     // gentle auto-advance so it feels fast (matches "minimal friction" intent)
     clearTimeout(window._adv);
-    window._adv = setTimeout(() => { if(screenIdx>=1 && screenIdx<=4) next(); }, 260);
+    window._adv = setTimeout(() => { if(screenIdx>=S.INTENT && screenIdx<=S.SLOT) next(); }, 260);
   });
 });
 
@@ -694,6 +830,65 @@ $$('.options').forEach(group => {
   const pre = group.querySelector('.opt.on');
   if(pre) recordAnswer(group, pre);
 });
+
+/* =====================================================================
+   WEIGHT-GOAL DIAL (screen 1)
+   ===================================================================== */
+const KG_MIN = 3, KG_MAX = 25;
+
+// Same three price tiers the old card layout used, so the sheet keeps
+// receiving a Goal Price that matches your plans.
+function kgPrice(kg){ return kg <= 5 ? '₹20,000' : kg <= 10 ? '₹30,000' : '₹30,000+'; }
+
+function setKg(kg){
+  kg = Math.min(KG_MAX, Math.max(KG_MIN, kg));
+  const topped = kg >= KG_MAX;            // 25 is presented as "25+"
+  answers.targetKg   = kg;
+  answers.goal       = topped ? '25+ kg' : `${kg} kg`;
+  answers.goalPrice  = kgPrice(kg);
+  $('#kgValue').textContent = topped ? '25+' : kg;
+  $('#kgPrice').textContent = answers.goalPrice;
+  $$('#kgChips .kg-chip').forEach(c => c.classList.toggle('on', +c.dataset.kg === kg));
+  $('#kgMinus').disabled = kg <= KG_MIN;
+  $('#kgPlus').disabled  = topped;
+}
+
+$('#kgMinus').addEventListener('click', () => setKg(answers.targetKg - 1));
+$('#kgPlus') .addEventListener('click', () => setKg(answers.targetKg + 1));
+$('#kgChips').addEventListener('click', e => {
+  const chip = e.target.closest('.kg-chip');
+  if(chip) setKg(+chip.dataset.kg);
+});
+setKg(10);
+
+/* =====================================================================
+   ABOUT-YOU STEPPERS (screen 2)
+   ===================================================================== */
+$$('.stepper').forEach(st => {
+  const min = +st.dataset.min, max = +st.dataset.max;
+  const field = st.dataset.field, unit = st.dataset.unit || '';
+  const out = st.querySelector('.st-val');
+  const [minus, plus] = st.querySelectorAll('.st-btn');
+
+  const set = v => {
+    v = Math.min(max, Math.max(min, v));
+    st.dataset.value = v;
+    answers[field] = v;
+    out.innerHTML = unit ? `${v}<small>${unit}</small>` : v;
+    minus.disabled = v <= min;
+    plus.disabled  = v >= max;
+  };
+
+  st.addEventListener('click', e => {
+    const btn = e.target.closest('.st-btn');
+    if(btn) set(+st.dataset.value + (+btn.dataset.d));
+  });
+  set(+st.dataset.value);
+});
+
+const genderSel = $('#genderSel');
+genderSel.addEventListener('change', () => { answers.gender = genderSel.value; });
+answers.gender = genderSel.value;
 
 /* =====================================================================
    WHATSAPP OPT-IN TOGGLE
@@ -731,7 +926,7 @@ function validateContact(showErrors){
     if(nameOk){ fnameInp.classList.remove('err'); $('#fnameErr').classList.remove('show'); }
   }
 
-  if(screenIdx === 5) $('#mainCta').disabled = !(phoneOk && nameOk);
+  if(screenIdx === S.CONTACT) $('#mainCta').disabled = !(phoneOk && nameOk);
   return phoneOk && nameOk;
 }
 
@@ -739,21 +934,21 @@ function validateContact(showErrors){
    MAIN CTA HANDLER
    ===================================================================== */
 $('#mainCta').addEventListener('click', () => {
-  if(screenIdx === 0){ next(); return; }
-  if(screenIdx >= 1 && screenIdx <= 4){ if(groupAnswered(screenIdx)) next(); return; }
-  if(screenIdx === 5){
+  if(screenIdx === S.HERO){ next(); return; }
+  if(screenIdx >= S.GOAL && screenIdx <= S.SLOT){ if(groupAnswered(screenIdx)) next(); return; }
+  if(screenIdx === S.CONTACT){
     if(!validateContact(true)) return;
     answers.name = fnameInp.value.trim();
     answers.phone = phoneInp.value.trim();
     submitLead();
     return;
   }
-  if(screenIdx === 6){ openWhatsApp(); return; }
+  if(screenIdx === S.DONE){ openWhatsApp(); return; }
 });
 
 $('#backLink').addEventListener('click', () => { if(screenIdx>0) show(screenIdx-1); });
 
-function next(){ if(screenIdx < 6) show(screenIdx+1); }
+function next(){ if(screenIdx < S.DONE) show(screenIdx+1); }
 
 /* =====================================================================
    SUBMIT → CONFIRMATION
@@ -771,7 +966,7 @@ function submitLead(){
     utm: Object.fromEntries(new URLSearchParams(location.search).entries())
   };
 
-  const done = () => { fillConfirmation(); show(6); startConfetti(); };
+  const done = () => { fillConfirmation(); show(S.DONE); startConfetti(); };
 
   if(CONFIG.leadEndpoint){
     fetch(CONFIG.leadEndpoint, {
@@ -948,7 +1143,7 @@ document.head.appendChild(style);
 const _origShow = show;
 show = function(idx){ _origShow(idx); if(idx===6) setTimeout(initScratch, 120); };
 
-show(0);
+show(S.HERO);
 </script>
 </body>
 </html>
