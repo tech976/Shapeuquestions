@@ -213,6 +213,59 @@ main{flex:1;position:relative;overflow:hidden}
 }
 .st-val small{font-size:11.5px;font-weight:700;color:var(--muted);margin-left:2px}
 
+/* ---------- BMI PANEL (screen 2) ---------- */
+.bmi-card{
+  background:var(--card);border:1.5px solid var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow-soft);padding:18px 16px 16px;
+}
+.bmi-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.bmi-num{font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:38px;letter-spacing:-.03em;line-height:1}
+.bmi-unit{font-size:12px;font-weight:600;color:var(--muted);margin-left:5px}
+.bmi-tag{
+  font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
+  color:#fff;background:var(--muted);padding:7px 13px;border-radius:99px;white-space:nowrap;
+}
+
+.bmi-scale{margin-bottom:18px}
+.bmi-bar{
+  position:relative;height:12px;border-radius:99px;
+  /* Stops map BMI 15–40 across the bar: 18.5→14%, 25→40%, 30→60% */
+  background:linear-gradient(90deg,
+    #4A9BD1 0 14%, #2E8B3D 14% 40%, #E8A33D 40% 60%, #C1272D 60% 100%);
+}
+.bmi-marker{
+  position:absolute;top:50%;left:0;width:22px;height:22px;margin:-11px 0 0 -11px;
+  border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(23,23,31,.3);
+  display:grid;place-items:center;
+  transition:left .6s cubic-bezier(.22,1,.36,1);
+}
+.bmi-marker i{width:10px;height:10px;border-radius:50%;background:var(--ink);transition:background .4s}
+.bmi-ticks,.bmi-bands{display:flex;justify-content:space-between;margin-top:7px}
+.bmi-ticks span{font-size:10px;font-weight:700;color:var(--muted)}
+.bmi-bands{margin-top:3px}
+.bmi-bands span{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#a9a49b;flex:1;text-align:center}
+.bmi-bands span:first-child{text-align:left}
+.bmi-bands span:last-child{text-align:right}
+
+.bmi-linked-t{font-size:12.5px;font-weight:700;color:var(--ink);margin:0 0 9px}
+.bmi-chips{display:flex;flex-wrap:wrap;gap:7px}
+.bmi-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  background:#fdf3f2;border:1px solid #f3dedc;border-radius:99px;
+  padding:7px 11px;font-size:11.5px;font-weight:700;color:var(--red-deep);
+}
+.bmi-why{font-size:12.5px;line-height:1.55;color:var(--muted);font-weight:500;margin:14px 0 0}
+.bmi-why b{color:var(--ink);font-weight:800}
+.bmi-cta{
+  display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+  margin-top:16px;padding:15px 18px;border:0;border-radius:99px;cursor:pointer;
+  background:linear-gradient(180deg,var(--red),var(--red-deep));color:#fff;
+  font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:15px;
+  box-shadow:0 8px 20px rgba(193,39,45,.28);transition:transform .12s, box-shadow .18s;
+}
+.bmi-cta:active{transform:scale(.98);box-shadow:0 4px 12px rgba(193,39,45,.24)}
+.bmi-note{font-size:10.5px;color:#a9a49b;font-weight:500;text-align:center;margin:10px 0 0}
+
 .seg{display:flex;gap:8px}
 .seg-btn{
   font-family:inherit;font-size:14px;font-weight:700;color:var(--muted);
@@ -534,6 +587,51 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
           <span class="radio"><i></i></span>
         </button>
       </div>
+
+      <!-- BMI read-out, computed from the height/weight given on screen 1 -->
+      <h3 class="sec-title">Your BMI, and what it’s <span class="q-hl">doing to you</span></h3>
+      <p class="q-sub">Based on the height and weight you entered.</p>
+
+      <div class="bmi-card">
+        <div class="bmi-head">
+          <div>
+            <span class="bmi-num" id="bmiNum">—</span>
+            <span class="bmi-unit">kg/m²</span>
+          </div>
+          <span class="bmi-tag" id="bmiTag">—</span>
+        </div>
+
+        <div class="bmi-scale">
+          <div class="bmi-bar"><span class="bmi-marker" id="bmiMarker"><i></i></span></div>
+          <div class="bmi-ticks">
+            <span>15</span><span>18.5</span><span>25</span><span>30</span><span>40</span>
+          </div>
+          <div class="bmi-bands">
+            <span>Underweight</span><span>Normal</span><span>Over</span><span>Obese</span>
+          </div>
+        </div>
+
+        <div class="bmi-linked" id="bmiLinked">
+          <p class="bmi-linked-t" id="bmiLinkedT">Commonly linked with:</p>
+          <div class="bmi-chips">
+            <span class="bmi-chip">🩸 Insulin resistance</span>
+            <span class="bmi-chip">🔥 Chronic inflammation</span>
+            <span class="bmi-chip">🐢 Metabolic slowdown</span>
+            <span class="bmi-chip">🍽️ Stubborn cravings</span>
+          </div>
+        </div>
+
+        <p class="bmi-why" id="bmiWhy">
+          These are causes, not character flaws — and each one is treatable. Our doctors
+          find which is driving <b>your</b> weight gain, then build the plan around it.
+        </p>
+
+        <button class="bmi-cta" type="button" id="bmiCta">
+          Find my cause &amp; start losing
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <p class="bmi-note">BMI is a screening guide, not a diagnosis. Your consultation covers the rest.</p>
+      </div>
     </section>
 
     <!-- ============ SCREEN 3 : CLINIC ============ -->
@@ -753,6 +851,7 @@ function show(idx){
   screens.forEach(s => s.classList.toggle('active', +s.dataset.screen === idx));
   screenIdx = idx;
   window.scrollTo({top:0, behavior:'instant' in window ? 'instant':'auto'});
+  if(idx === S.INTENT) renderBmi();   // height/weight are known by now
   updateChrome();
 }
 
@@ -820,7 +919,9 @@ $$('.options').forEach(group => {
     $('#mainCta').disabled = false;
     // gentle auto-advance so it feels fast (matches "minimal friction" intent)
     clearTimeout(window._adv);
-    window._adv = setTimeout(() => { if(screenIdx>=S.INTENT && screenIdx<=S.SLOT) next(); }, 260);
+    // Intent is excluded: the BMI panel sits below it, and auto-advancing
+    // would whisk the lead past it the instant they answer.
+    window._adv = setTimeout(() => { if(screenIdx>S.INTENT && screenIdx<=S.SLOT) next(); }, 260);
   });
 });
 
@@ -886,6 +987,59 @@ $$('.stepper').forEach(st => {
     if(btn) set(+st.dataset.value + (+btn.dataset.d));
   });
   set(+st.dataset.value);
+});
+
+/* =====================================================================
+   BMI READ-OUT (screen 2)
+   ===================================================================== */
+// WHO categories. For Asian-Indian cut-offs (overweight 23, obese 25),
+// change the thresholds in BMI_BANDS — nothing else needs touching.
+const BMI_BANDS = [
+  { max:18.5, name:'Underweight', color:'#4A9BD1',
+    linked:['🍽️ Low muscle reserve','🐢 Slow metabolism','🩺 Nutrient gaps'],
+    lead:'Commonly seen alongside:' },
+  { max:25,   name:'Normal',      color:'#2E8B3D',
+    linked:['💪 Good baseline','🎯 Easier to maintain','🩺 Lower risk'],
+    lead:'What this usually means:' },
+  { max:30,   name:'Overweight',  color:'#E8A33D',
+    linked:['🩸 Early insulin resistance','🔥 Low-grade inflammation','🐢 Metabolic slowdown','🍽️ Stubborn cravings'],
+    lead:'Commonly linked with:' },
+  { max:Infinity, name:'Obese',   color:'#C1272D',
+    linked:['🩸 Insulin resistance','🔥 Chronic inflammation','🐢 Metabolic slowdown','🍽️ Hormonal cravings'],
+    lead:'Commonly linked with:' },
+];
+
+const BMI_SCALE_MIN = 15, BMI_SCALE_MAX = 40;
+
+function renderBmi(){
+  const h = answers.height / 100;                 // cm → m
+  if(!answers.weight || !h) return;
+  const bmi = answers.weight / (h * h);
+  const band = BMI_BANDS.find(b => bmi < b.max);
+
+  answers.bmi = Math.round(bmi * 10) / 10;
+  answers.bmiCategory = band.name;
+
+  $('#bmiNum').textContent = answers.bmi.toFixed(1);
+  $('#bmiNum').style.color = band.color;
+  const tag = $('#bmiTag');
+  tag.textContent = band.name;
+  tag.style.background = band.color;
+
+  // Clamp so an off-scale BMI still parks at an end of the bar.
+  const pct = Math.max(0, Math.min(100,
+    (bmi - BMI_SCALE_MIN) / (BMI_SCALE_MAX - BMI_SCALE_MIN) * 100));
+  $('#bmiMarker').style.left = pct + '%';
+  $('#bmiMarker').querySelector('i').style.background = band.color;
+
+  $('#bmiLinkedT').textContent = band.lead;
+  $('#bmiLinked').querySelector('.bmi-chips').innerHTML =
+    band.linked.map(t => `<span class="bmi-chip">${t}</span>`).join('');
+}
+
+$('#bmiCta').addEventListener('click', () => {
+  if(groupAnswered(S.INTENT)) next();
+  else $('.options[data-group="intent"]').scrollIntoView({behavior:'smooth', block:'center'});
 });
 
 $('#genderSeg').addEventListener('click', e => {
