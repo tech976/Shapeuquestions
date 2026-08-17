@@ -65,9 +65,8 @@ body{
 }
 .topbar.hidden{display:none}
 .brand-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
-.brand{display:flex;align-items:center;gap:8px;font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:14px;letter-spacing:-.01em}
-.brand .dot{width:22px;height:22px;border-radius:7px;background:var(--red);display:grid;place-items:center;color:#fff;font-size:12px;font-weight:800}
-.brand small{display:block;font-weight:600;font-size:9px;letter-spacing:.16em;color:var(--muted);margin-top:-1px}
+/* Height-driven so the logo's own aspect ratio is never distorted. */
+.brand-logo{display:block;height:30px;width:auto;flex:none}
 .step-count{font-size:11px;font-weight:600;color:var(--muted)}
 .progress{height:6px;border-radius:99px;background:#e3ded5;overflow:hidden}
 .progress > i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--red),#E0574B);transition:width .5s cubic-bezier(.22,1,.36,1)}
@@ -397,11 +396,8 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
   <!-- PROGRESS BAR -->
   <div class="topbar hidden" id="topbar">
     <div class="brand-row">
-      <div class="brand">
-        <span class="dot">S</span>
-        <span>Shape U Clinic<small>OBESITY &amp; WEIGHT LOSS</small></span>
-      </div>
-      <span class="step-count" id="stepCount">Step 1 of 5</span>
+      <img class="brand-logo" src="logo.png" width="210" height="67" alt="Shape-U Obesity Clinic" />
+      <span class="step-count" id="stepCount">Step 1 of 6</span>
     </div>
     <div class="progress"><i id="progressFill"></i></div>
   </div>
