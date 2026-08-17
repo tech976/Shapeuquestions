@@ -354,7 +354,7 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
         </div>
         <div>
           <h3>Get 2 sessions FREE</h3>
-          <p>On a 10-session plan · Offer ends in <span class="timer" id="offerTimer">47:59:58</span></p>
+          <p>On a 10-session plan · Offer ends in <span class="timer" id="offerTimer">30:00</span></p>
         </div>
       </div>
     </section>
@@ -459,10 +459,13 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       <!-- autocomplete off + random names to defeat browser/Meta prefill -->
       <form id="leadForm" autocomplete="off" novalidate>
         <div class="field">
-          <label for="fname">Your first name</label>
-          <input class="txt-inp" id="fname" name="f_9x3k" type="text" inputmode="text"
+          <label for="fld_a">Your first name</label>
+          <!-- Opaque id/name and autocomplete="off" keep Chrome's field-name
+               heuristics from recognising this as a name field. -->
+          <input class="txt-inp" id="fld_a" name="f_9x3k" type="text" inputmode="text"
                  autocomplete="off" autocorrect="off" spellcheck="false"
-                 data-lpignore="true" data-form-type="other" placeholder="e.g. Priya" maxlength="30" />
+                 data-lpignore="true" data-1p-ignore data-bwignore="true"
+                 data-form-type="other" placeholder="e.g. Priya" maxlength="30" />
           <div class="err-msg" id="fnameErr">Please enter your name.</div>
         </div>
 
@@ -470,9 +473,13 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
           <label for="phone">Mobile number</label>
           <div class="inp-wrap">
             <span class="pre">🇮🇳 +91</span>
-            <input class="txt-inp with-pre" id="phone" name="p_7m2v" type="tel" inputmode="numeric"
+            <!-- type="text" rather than "tel": inputmode still gives the numeric
+                 keypad on mobile, but Chrome no longer treats it as a phone
+                 field and so offers no saved-number dropdown. -->
+            <input class="txt-inp with-pre" id="fld_b" name="p_7m2v" type="text" inputmode="numeric"
                    autocomplete="off" autocorrect="off" spellcheck="false"
-                   data-lpignore="true" data-form-type="other" placeholder="10-digit mobile" maxlength="10" />
+                   data-lpignore="true" data-1p-ignore data-bwignore="true"
+                   data-form-type="other" placeholder="10-digit mobile" maxlength="10" />
           </div>
           <div class="hint">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#6C6C77" stroke-width="1.6" stroke-linejoin="round"/></svg>
@@ -583,7 +590,8 @@ const CONFIG = {
   leadEndpoint: "https://script.google.com/macros/s/AKfycbwaMaO-DfSVSIwqEBcQWPENUvMvB5XQ3M4JtRrEdkIWQsF5LpV1hPfdCiKEBAtQAU-LUQ/exec",
 
   // Offer
-  offerHours: 48
+  // Countdown shown in the offer banner, in minutes. Restarts on every page load.
+  offerMinutes: 30
 };
 
 /* =====================================================================
@@ -680,7 +688,7 @@ waOptin.addEventListener('keydown', e => { if(e.key===' '||e.key==='Enter'){ e.p
 /* =====================================================================
    CONTACT VALIDATION  (autofill defeated, manual entry enforced)
    ===================================================================== */
-const phoneInp = $('#phone'), fnameInp = $('#fname');
+const phoneInp = $('#fld_b'), fnameInp = $('#fld_a');
 
 // strip non-digits live
 phoneInp.addEventListener('input', () => {
@@ -897,15 +905,16 @@ document.head.appendChild(style);
    OFFER COUNTDOWN + SCARCITY
    ===================================================================== */
 (function countdown(){
-  let total = CONFIG.offerHours*3600 - Math.floor((Date.now()/1000)%3600);
+  let total = CONFIG.offerMinutes*60;
   const el = $('#offerTimer');
-  setInterval(() => {
-    total = Math.max(0,total-1);
-    const hh = String(Math.floor(total/3600)).padStart(2,'0');
-    const mm = String(Math.floor(total%3600/60)).padStart(2,'0');
+  const tick = () => {
+    const mm = String(Math.floor(total/60)).padStart(2,'0');
     const ss = String(total%60).padStart(2,'0');
-    if(el) el.textContent = `${hh}:${mm}:${ss}`;
-  },1000);
+    if(el) el.textContent = `${mm}:${ss}`;
+    total = Math.max(0,total-1);
+  };
+  tick();                       // paint immediately so the markup value never shows stale
+  setInterval(tick,1000);
 })();
 
 // believable, gently-decreasing slot counter (per session)
