@@ -256,15 +256,7 @@ main{flex:1;position:relative;overflow:hidden}
 }
 .bmi-why{font-size:12.5px;line-height:1.55;color:var(--muted);font-weight:500;margin:14px 0 0}
 .bmi-why b{color:var(--ink);font-weight:800}
-.bmi-cta{
-  display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
-  margin-top:16px;padding:15px 18px;border:0;border-radius:99px;cursor:pointer;
-  background:linear-gradient(180deg,var(--red),var(--red-deep));color:#fff;
-  font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:15px;
-  box-shadow:0 8px 20px rgba(193,39,45,.28);transition:transform .12s, box-shadow .18s;
-}
-.bmi-cta:active{transform:scale(.98);box-shadow:0 4px 12px rgba(193,39,45,.24)}
-.bmi-note{font-size:10.5px;color:#a9a49b;font-weight:500;text-align:center;margin:10px 0 0}
+.bmi-note{font-size:10.5px;color:#a9a49b;font-weight:500;text-align:center;margin:14px 0 0}
 
 .seg{display:flex;gap:8px}
 .seg-btn{
@@ -623,10 +615,6 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
 
         <p class="bmi-why" id="bmiWhy">All treatable — once we know which one is <b>yours</b>.</p>
 
-        <button class="bmi-cta" type="button" id="bmiCta">
-          Find my cause &amp; start losing
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
         <p class="bmi-note">BMI is a screening guide, not a diagnosis. Your consultation covers the rest.</p>
       </div>
     </section>
@@ -874,6 +862,7 @@ function updateChrome(){
   cta.classList.remove('hidden');
   if(screenIdx === S.HERO){ setCta('Check my eligibility', true, false); cta.disabled = false; }
   else if(screenIdx === S.GOAL){ setCta('Show my results', true, false); cta.disabled = !answers.gender; }
+  else if(screenIdx === S.INTENT){ setCta('Find my cause &amp; start losing', true, false); cta.disabled = !groupAnswered(S.INTENT); }
   else if(screenIdx === S.CONTACT){ setCta('Book my free consultation', true, false); validateContact(false); }
   else if(screenIdx === S.DONE){ setCta('Confirm on WhatsApp now', true, true); cta.disabled = false; }
   else { setCta('Continue', true, false); cta.disabled = !groupAnswered(screenIdx); }
@@ -1033,11 +1022,6 @@ function renderBmi(){
   $('#bmiLinked').querySelector('.bmi-chips').innerHTML =
     band.linked.map(t => `<span class="bmi-chip">${t}</span>`).join('');
 }
-
-$('#bmiCta').addEventListener('click', () => {
-  if(groupAnswered(S.INTENT)) next();
-  else $('.options[data-group="intent"]').scrollIntoView({behavior:'smooth', block:'center'});
-});
 
 $('#genderSeg').addEventListener('click', e => {
   const btn = e.target.closest('.seg-btn');
