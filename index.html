@@ -213,14 +213,15 @@ main{flex:1;position:relative;overflow:hidden}
 }
 .st-val small{font-size:11.5px;font-weight:700;color:var(--muted);margin-left:2px}
 
-.about-sel{
-  font-family:inherit;font-size:14.5px;font-weight:700;color:var(--ink);
+.seg{display:flex;gap:8px}
+.seg-btn{
+  font-family:inherit;font-size:14px;font-weight:700;color:var(--muted);
   background:var(--card);border:1.5px solid var(--line);border-radius:99px;
-  padding:9px 34px 9px 16px;cursor:pointer;appearance:none;
-  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2317171F' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 13px center;
+  padding:9px 18px;cursor:pointer;
+  transition:border-color .18s, background .18s, color .18s, transform .12s;
 }
-.about-sel:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 4px rgba(193,39,45,.08)}
+.seg-btn:active{transform:scale(.95)}
+.seg-btn.on{border-color:var(--red);background:#fffaf9;color:var(--red)}
 .secure-note{
   display:flex;align-items:center;justify-content:center;gap:6px;
   font-size:12.5px;font-weight:600;color:var(--green);margin:14px 0 0;
@@ -496,11 +497,12 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
         <div class="about-row">
           <span class="about-ico">👤</span>
           <span class="about-lbl">Gender</span>
-          <select class="about-sel" id="genderSel" aria-label="Gender">
-            <option>Female</option>
-            <option>Male</option>
-            <option>Other</option>
-          </select>
+          <!-- Starts unselected on purpose: a pre-filled gender would be
+               recorded as an answer nobody actually gave. -->
+          <div class="seg" id="genderSeg" role="radiogroup" aria-label="Gender">
+            <button class="seg-btn" type="button" role="radio" aria-checked="false" data-gender="Male">Male</button>
+            <button class="seg-btn" type="button" role="radio" aria-checked="false" data-gender="Female">Female</button>
+          </div>
         </div>
       </div>
 
@@ -775,7 +777,7 @@ function updateChrome(){
   const cta = $('#mainCta');
   cta.classList.remove('hidden');
   if(screenIdx === S.HERO){ setCta('Check my eligibility', true, false); cta.disabled = false; }
-  else if(screenIdx === S.GOAL){ setCta('Show my results', true, false); cta.disabled = false; }
+  else if(screenIdx === S.GOAL){ setCta('Show my results', true, false); cta.disabled = !answers.gender; }
   else if(screenIdx === S.CONTACT){ setCta('Book my free consultation', true, false); validateContact(false); }
   else if(screenIdx === S.DONE){ setCta('Confirm on WhatsApp now', true, true); cta.disabled = false; }
   else { setCta('Continue', true, false); cta.disabled = !groupAnswered(screenIdx); }
@@ -789,10 +791,10 @@ function setCta(label, showArrow, whatsapp){
     : `${label} ${showArrow ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}`;
 }
 
-// Screens 1 and 2 are dial/stepper based and always hold a value, so only the
-// tap-to-choose screens can be unanswered.
+// The dial and steppers always hold a value; gender is the only field on
+// screen 1 that starts empty, so it is what gates that step.
 function groupAnswered(idx){
-  const map = {[S.INTENT]:'intent', [S.CLINIC]:'clinic', [S.SLOT]:'slot'};
+  const map = {[S.GOAL]:'gender', [S.INTENT]:'intent', [S.CLINIC]:'clinic', [S.SLOT]:'slot'};
   return map[idx] ? !!answers[map[idx]] : true;
 }
 
@@ -886,9 +888,17 @@ $$('.stepper').forEach(st => {
   set(+st.dataset.value);
 });
 
-const genderSel = $('#genderSel');
-genderSel.addEventListener('change', () => { answers.gender = genderSel.value; });
-answers.gender = genderSel.value;
+$('#genderSeg').addEventListener('click', e => {
+  const btn = e.target.closest('.seg-btn');
+  if(!btn) return;
+  answers.gender = btn.dataset.gender;
+  $$('#genderSeg .seg-btn').forEach(b => {
+    const on = b === btn;
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-checked', on);
+  });
+  updateChrome();   // gender is the one required answer on this screen
+});
 
 /* =====================================================================
    WHATSAPP OPT-IN TOGGLE
