@@ -96,43 +96,12 @@ main{flex:1;position:relative;overflow:hidden}
   margin-bottom:16px;
 }
 /* The ad creative carries its own headline and offer, so it is shown whole
-   rather than cropped behind text — the page's own copy sits in the panel
-   below it instead of on top of it. */
+   and speaks for itself — the trust strip picks up directly beneath it. */
 .hero .creative{
   display:block;width:100%;height:auto;
   aspect-ratio:4/5;object-fit:cover;
   background:#f1f1f4;
 }
-.hero .photo{
-  background:
-    radial-gradient(120% 95% at 12% 8%, rgba(224,87,75,.55), transparent 52%),
-    radial-gradient(90% 80% at 100% 0%, rgba(255,210,76,.16), transparent 48%),
-    linear-gradient(158deg, #7c161a 0%, #3a0d10 58%, #1b1b21 100%);
-  position:relative;
-  padding:18px 20px 20px;
-}
-.hero .photo .eyebrow{margin-bottom:10px}
-.hero .photo::before{
-  content:"";position:absolute;inset:0;opacity:.5;pointer-events:none;
-  background-image:radial-gradient(rgba(255,255,255,.16) 1px, transparent 1.4px);
-  background-size:15px 15px;
-  -webkit-mask-image:linear-gradient(180deg,#000,transparent 60%);
-  mask-image:linear-gradient(180deg,#000,transparent 60%);
-}
-.eyebrow{
-  align-self:flex-start;
-  display:inline-flex;align-items:center;gap:6px;
-  background:var(--red);color:#fff;
-  font-size:10.5px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;
-  padding:6px 11px;border-radius:99px;margin-bottom:auto;
-}
-.hero h1{
-  font-family:"Plus Jakarta Sans",sans-serif;
-  color:#fff;font-weight:800;letter-spacing:-.02em;line-height:1.08;
-  font-size:29px;margin:0 0 8px;
-}
-.hero h1 .hl{color:#FFD24C}
-.hero .subline{color:rgba(255,255,255,.86);font-size:13.5px;font-weight:500;margin:0}
 
 .trust-strip{
   display:grid;grid-template-columns:1fr 1fr;gap:1px;
@@ -367,11 +336,6 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       <div class="hero">
         <img class="creative" src="hero.jpg" width="640" height="800" fetchpriority="high"
              alt="Shape-U Obesity Clinic — Lose inches, not just weight. Book 8 sessions and get ₹4,000 worth of services free." />
-        <div class="photo">
-          <span class="eyebrow">Tried &amp; Tested · U-Lipolysis</span>
-          <h1>Stubborn belly fat? <span class="hl">Melt it, painlessly.</span></h1>
-          <p class="subline">Ranked #1 weight-loss clinic in Mumbai · Doctor-supervised</p>
-        </div>
         <div class="trust-strip">
           <div class="cell"><b>50,000+</b><span>Happy patients</span></div>
           <div class="cell"><b>15,000+ kg</b><span>Reduced safely</span></div>
