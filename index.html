@@ -676,22 +676,22 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
       <div class="options" data-group="clinic">
         <button class="opt" data-value="Andheri">
           <span class="lead-ico">📍</span>
-          <span class="txt"><b>Andheri</b><small>West · near station</small></span>
+          <span class="txt"><b>Andheri</b><small>Near Lokhandwala Road</small></span>
           <span class="radio"><i></i></span>
         </button>
         <button class="opt" data-value="Malad">
           <span class="lead-ico">📍</span>
-          <span class="txt"><b>Malad</b><small>West · Link Road</small></span>
+          <span class="txt"><b>Malad</b><small>Near Marve Road</small></span>
           <span class="radio"><i></i></span>
         </button>
         <button class="opt" data-value="Mulund">
           <span class="lead-ico">📍</span>
-          <span class="txt"><b>Mulund</b><small>West · LBS Marg</small></span>
+          <span class="txt"><b>Mulund</b><small>Near 4 Raasta</small></span>
           <span class="radio"><i></i></span>
         </button>
         <button class="opt" data-value="Lower Parel">
           <span class="lead-ico">📍</span>
-          <span class="txt"><b>Lower Parel</b><small>Marve Road</small></span>
+          <span class="txt"><b>Lower Parel</b><small>Near Palladium Mall</small></span>
           <span class="radio"><i></i></span>
         </button>
       </div>
@@ -843,6 +843,20 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
 const CONFIG = {
   clinicName: "Shape U Clinic",
 
+  // Per-branch numbers, keyed by the data-value on the clinic buttons.
+  // The lead sees, saves and messages the number for the clinic they picked.
+  //   display = shown on the confirmation screen
+  //   raw     = goes into the saved contact (vCard)
+  //   wa      = WhatsApp deep link (digits only, NO +)
+  clinicNumbers: {
+    "Andheri":     { display: "+91 81044 89650", raw: "+918104489650", wa: "918104489650" },
+    "Malad":       { display: "+91 81044 89652", raw: "+918104489652", wa: "918104489652" },
+    "Mulund":      { display: "+91 84338 24234", raw: "+918433824234", wa: "918433824234" },
+    "Lower Parel": { display: "+91 93727 76731", raw: "+919372776731", wa: "919372776731" }
+  },
+
+  // Fallback below - used only if no clinic was picked, or an unknown one
+  // comes through. Every selectable clinic is covered by clinicNumbers above.
   // WhatsApp number the lead will message (country code, digits only, NO +)
   waNumber: "917021559848",
 
@@ -1204,12 +1218,22 @@ function submitLead(){
   }
 }
 
+// The number the lead sees / saves / messages, for the clinic they selected.
+// Falls back to the central number if the clinic is blank or unrecognised.
+function clinicContact(){
+  return CONFIG.clinicNumbers[answers.clinic] || {
+    display: CONFIG.callNumberDisplay,
+    raw:     CONFIG.callNumberRaw,
+    wa:      CONFIG.waNumber
+  };
+}
+
 function fillConfirmation(){
   $('#doneName').textContent = answers.name || 'friend';
   $('#doneGoal').textContent = answers.goal ? ('lose ' + answers.goal.replace(/^lose\s*/i,'')) : 'reach your goal';
   $('#doneClinic').textContent = answers.clinic ? (answers.clinic + ' clinic') : 'our clinic';
   $('#doneSlot').textContent = answers.slot === 'Call me now' ? 'within ~10 minutes' : ('today, ' + answers.slot);
-  $('#callNumDisplay').textContent = CONFIG.callNumberDisplay;
+  $('#callNumDisplay').textContent = clinicContact().display;
 }
 
 /* =====================================================================
@@ -1220,9 +1244,9 @@ $('#saveContactBtn').addEventListener('click', () => {
 `BEGIN:VCARD
 VERSION:3.0
 N:Clinic;Shape U;;;
-FN:Shape U Clinic (Weight Loss)
+FN:Shape U Clinic${answers.clinic ? " " + answers.clinic : ""} (Weight Loss)
 ORG:Shape U Clinic
-TEL;TYPE=CELL:${CONFIG.callNumberRaw}
+TEL;TYPE=CELL:${clinicContact().raw}
 NOTE:Your weight-loss consultation call
 END:VCARD`;
   const blob = new Blob([vcard], {type:'text/vcard'});
@@ -1246,7 +1270,7 @@ function openWhatsApp(){
 • Clinic: ${answers.clinic}
 • Preferred time: ${answers.slot}
 Please confirm my 2 FREE sessions.`;
-  const url = `https://wa.me/${CONFIG.waNumber}?text=${encodeURIComponent(msg)}`;
+  const url = `https://wa.me/${clinicContact().wa}?text=${encodeURIComponent(msg)}`;
   window.open(url, '_blank');
 }
 
