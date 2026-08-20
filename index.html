@@ -1218,7 +1218,39 @@ function submitLead(){
   }
 }
 
+/* =====================================================================
+   POST-BOOKING ACTIONS -> SHEET
+   The lead's row is written the moment they book, which is before this
+   screen exists — so saving the number, scratching the card and opening
+   WhatsApp are all reported afterwards as updates keyed on the phone
+   number. Fire-and-forget: sendBeacon is used first because it survives
+   the tab being backgrounded by the WhatsApp hand-off, which a plain
+   fetch does not.
+   ===================================================================== */
+const actionsSent = {};
+
+function trackAction(field){
+  if(actionsSent[field]) return;     // one Yes per row, however many taps
+  actionsSent[field] = true;
+  if(!answers.phone) return;         // nothing to match the row on
+
+  const body = JSON.stringify({ type:'update', field:field, phone:'+91' + answers.phone });
+
+  if(!CONFIG.leadEndpoint){ console.log('[DEMO] action ->', body); return; }
+
+  // text/plain keeps this a simple request, so no CORS preflight either way.
+  const blob = new Blob([body], {type:'text/plain;charset=utf-8'});
+  if(navigator.sendBeacon && navigator.sendBeacon(CONFIG.leadEndpoint, blob)) return;
+  fetch(CONFIG.leadEndpoint, {
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: body,
+    keepalive: true
+  }).catch(() => {});
+}
+
 // The number the lead sees / saves / messages, for the clinic they selected.
+
 // Falls back to the central number if the clinic is blank or unrecognised.
 function clinicContact(){
   return CONFIG.clinicNumbers[answers.clinic] || {
@@ -1240,6 +1272,8 @@ function fillConfirmation(){
    SAVE CONTACT (vCard) — helps the lead recognise & answer the call
    ===================================================================== */
 $('#saveContactBtn').addEventListener('click', () => {
+  trackAction('saveContact');
+
   const vcard =
 `BEGIN:VCARD
 VERSION:3.0
@@ -1271,6 +1305,7 @@ function openWhatsApp(){
 • Preferred time: ${answers.slot}
 Please confirm my ₹4,000 worth of free services.`;
   const url = `https://wa.me/${clinicContact().wa}?text=${encodeURIComponent(msg)}`;
+  trackAction('whatsapp');
   window.open(url, '_blank');
 }
 
@@ -1348,6 +1383,7 @@ function initScratch(){
   }
   function fullReveal(){
     if(revealed) return; revealed = true;
+    trackAction('scratch');
     canvas.style.transition = 'opacity .45s';
     canvas.style.opacity = '0';
     reveal.classList.add('done');

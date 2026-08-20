@@ -94,7 +94,43 @@ const NOTIFY_EMAIL = 'you@example.com';
 Then redeploy. Gmail allows roughly 100 such emails per day on a free account,
 1,500 on Workspace.
 
+## What the lead did after booking (columns Q, R, S)
+
+The row is written the moment the lead taps **Book my free consultation** —
+before the confirmation screen even exists. So the three things they can do on
+that screen are recorded afterwards, as follow-up updates to the row that is
+already there:
+
+| Column | Header | Turns `Yes` when the lead… |
+| ------ | ------ | -------------------------- |
+| Q | `Save Contact` | taps **Save contact** to store the clinic's number |
+| R | `Scratch Card` | scratches the bonus card open |
+| S | `WhatsApp Confirm` | taps **Confirm on WhatsApp now** |
+
+Every new row starts at `No` on all three, so a blank never has to be read as
+either "no" or "we lost it".
+
+**How the row is found.** The page never learns which row it landed in — a
+cross-origin read of the redirect Apps Script issues is not dependable — so an
+update carries the phone number instead, and the script stamps the *most
+recent* row matching its last 10 digits. If the same number books twice, the
+newer row is the one being updated, which is the one the lead is looking at.
+
+**Updates are best-effort.** They go out via `sendBeacon` so they survive the
+tab being backgrounded by the WhatsApp hand-off. If one is lost the row simply
+keeps its `No` — the lead is never blocked and the booking is never at risk.
+
+**Rows from before these columns existed** have three blank cells rather than
+`No`. If you would rather see `No` there, open the script editor, pick
+`backfillActionDefaults` from the function dropdown and hit Run — once. It only
+fills blanks, so any `Yes` already recorded survives it.
+
+> After pasting this version of `Code.gs`, you **must redeploy** (see
+> *Redeploying after an edit* above) or the live URL keeps running the old code
+> and Q/R/S stay empty.
+
 ## Notes
+
 
 - **Submissions never block the lead.** The page calls `.catch(done)`, so if the
   script is down the user still reaches the confirmation screen — but that lead
@@ -115,4 +151,10 @@ Then redeploy. Gmail allows roughly 100 such emails per day on a free account,
   the other LP, and vice versa. They only meet inside the spreadsheet.
 - **Don't reorder or rename the tabs' columns by hand.** New rows are appended
   positionally, so an inserted column would shift every later value. Add helper
-  columns to the *right* of `Callback Slot` instead — those are left alone.
+  columns to the *right* of `WhatsApp Confirm` (column S) instead — those are
+  left alone, which is exactly how `Lead Feedback` in column T survives.
+- **Headers for new columns are repaired automatically.** `Code.gs` writes the
+  full header row only on a brand-new tab; on a tab that is already collecting
+  leads it fills in just the header cells that are still blank. A header you
+  renamed by hand keeps the name you gave it.
+
