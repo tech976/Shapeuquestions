@@ -1303,7 +1303,10 @@ function openWhatsApp(){
 • Goal: ${answers.goal}
 • Clinic: ${answers.clinic}
 • Preferred time: ${answers.slot}
-Please confirm my ₹4,000 worth of free services.`;
+• Budget: ${answers.goalPrice}
+• Number: +91${answers.phone}
+
+I want to claim the offer of booking 8 sessions and getting services worth ₹4,000 absolutely free.`;
   const url = `https://wa.me/${clinicContact().wa}?text=${encodeURIComponent(msg)}`;
   trackAction('whatsapp');
   window.open(url, '_blank');
