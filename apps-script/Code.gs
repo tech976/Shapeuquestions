@@ -65,7 +65,6 @@ const ACTION_COLUMNS = {
   whatsapp:    'WhatsApp Confirm'
 };
 
-
 /* ── Entry points ──────────────────────────────────────────────────────── */
 
 function doPost(e) {
@@ -86,7 +85,6 @@ function doPost(e) {
     const row = appendLead(body);
     if (NOTIFY_EMAIL) notify(body, row);
     return json({ ok: true, row: row });
-
   } catch (err) {
     // Log the failure so a bad payload is recoverable instead of silently lost.
     console.error(err, e && e.postData && e.postData.contents);
@@ -136,7 +134,6 @@ function appendLead(lead) {
     'No',
     'No'
   ]);
-
 
   return sheet.getLastRow();
 }
@@ -189,7 +186,6 @@ function backfillActionDefaults() {
 }
 
 function getSheet() {
-
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
 
@@ -217,7 +213,6 @@ function getSheet() {
   }
 
   return sheet;
-
 }
 
 function notify(lead, row) {
@@ -248,7 +243,6 @@ function lastTen(value) {
 }
 
 function text(value) {
-
   return value ? "'" + value : '';
 }
 
