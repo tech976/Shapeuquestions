@@ -28,6 +28,46 @@ src="https://www.facebook.com/tr?id=395991498965989&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
 
+<!-- MSG91 OTP widget. exposeMethods:true suppresses their popup and puts
+     sendOtp/verifyOtp/retryOtp on window, so the verification step can live
+     inside the funnel and be styled like every other screen.
+     widgetId and tokenAuth are public by design; the AuthKey that proves a
+     token server-side is NOT here - it lives in the Apps Script. -->
+<script>
+var configuration = {
+  widgetId:  "36667a67436e393233353835",
+  tokenAuth: "520932TU9OQwuB86a3942beP1",
+  exposeMethods: true,
+  success: () => {},   // unused with exposeMethods - we drive it ourselves
+  failure: () => {}
+};
+window.otpReady = false;
+</script>
+<script>
+(function loadOtpScript(urls){
+  let i = 0;
+  function attempt(){
+    const s = document.createElement('script');
+    s.src = urls[i];
+    s.async = true;
+    s.onload = () => {
+      if(typeof window.initSendOTP === 'function'){
+        window.initSendOTP(configuration);
+        window.otpReady = true;
+        document.dispatchEvent(new Event('otp-ready'));
+      }
+    };
+    s.onerror = () => { if(++i < urls.length) attempt(); };
+    document.head.appendChild(s);
+  }
+  attempt();
+})([
+  'https://verify.msg91.com/otp-provider.js',
+  'https://verify.phone91.com/otp-provider.js'
+]);
+</script>
+
+
 <style>
 /* ============================================================
    SHAPE U CLINIC — HIGH-PICKUP LANDING FORM
@@ -375,6 +415,24 @@ input.txt-inp:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 4px rg
 input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
 .err-msg{color:#d13a3a;font-size:12px;font-weight:600;margin-top:6px;display:none}
 .err-msg.show{display:block}
+
+/* OTP step. The code box is deliberately wide-tracked and centred so a
+   6-digit code reads as digits-in-boxes without the fragility of six real
+   inputs (which break paste, autofill and backspace on Android). */
+input.txt-inp.otp-inp{
+  text-align:center;letter-spacing:.5em;font-weight:800;font-size:22px;
+  padding-left:14px;padding-right:0;font-variant-numeric:tabular-nums;
+}
+input.txt-inp.otp-inp::placeholder{letter-spacing:.35em;font-weight:600;font-size:19px}
+.link-btn{
+  background:none;border:0;padding:0;font:inherit;color:var(--red);
+  font-weight:700;text-decoration:underline;cursor:pointer;
+}
+.link-btn:disabled{color:var(--muted);text-decoration:none;cursor:default}
+.otp-note{font-size:12.5px;color:#2E8B3D;font-weight:600;margin-top:8px;display:none}
+.otp-note.show{display:block}
+.otp-foot{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:2px}
+
 
 .wa-optin{
   display:flex;align-items:flex-start;gap:12px;
@@ -766,11 +824,41 @@ input.txt-inp.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="11" rx="2" stroke="#6C6C77" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="#6C6C77" stroke-width="1.6"/></svg>
           Your details are safe with Shape U Clinic and are never sold or shared. You’ll receive one confirmation call and a WhatsApp message only.
         </div>
+
+        <div class="err-msg" id="sendErr"></div>
       </form>
     </section>
 
-    <!-- ============ SCREEN 6 : CONFIRMATION ============ -->
+    <!-- ============ SCREEN 6 : VERIFY MOBILE ============ -->
     <section class="screen" data-screen="6">
+      <p class="q-kicker">Verify your number</p>
+      <h2 class="q-title">Enter the code we just sent</h2>
+      <p class="q-sub">
+        Sent by SMS to <b id="otpTarget">+91 </b>.
+        <button type="button" class="link-btn" id="otpChange">Change number</button>
+      </p>
+
+      <div class="field">
+        <label for="otpCode">Verification code</label>
+        <!-- one-time-code lets iOS and Android offer the SMS code straight
+             from the keyboard, which is the whole difference between this
+             step feeling instant and feeling like a chore. -->
+        <input class="txt-inp otp-inp" id="otpCode" name="otp_code" type="text"
+               inputmode="numeric" autocomplete="one-time-code"
+               maxlength="4" placeholder="----" />
+        <div class="err-msg" id="otpErr">That code didn't match. Check and try again.</div>
+        <div class="otp-note" id="otpNote">Code sent again.</div>
+      </div>
+
+      <p class="otp-foot">
+        Didn't get it?
+        <button type="button" class="link-btn" id="otpResend" disabled>Resend code</button><span id="otpTimer"></span>
+      </p>
+    </section>
+
+    <!-- ============ SCREEN 7 : CONFIRMATION ============ -->
+    <section class="screen" data-screen="7">
+
       <div class="confirm-wrap">
         <div class="check-burst">
           <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -880,12 +968,13 @@ const CONFIG = {
 const answers = {
   goal:"", goalPrice:"", targetKg:0,
   age:0, weight:0, height:0, gender:"",
-  intent:"", tier:"", clinic:"", slot:"", name:"", phone:"", whatsapp:true
+  intent:"", tier:"", clinic:"", slot:"", name:"", phone:"", whatsapp:true,
+  otpToken:""
 };
 let screenIdx = 0;
 
 // Named so a screen can be inserted without hunting down bare numbers.
-const S = { HERO:0, GOAL:1, INTENT:2, CLINIC:3, SLOT:4, CONTACT:5, DONE:6 };
+const S = { HERO:0, GOAL:1, INTENT:2, CLINIC:3, SLOT:4, CONTACT:5, OTP:6, DONE:7 };
 const FORM_STEPS = S.CONTACT; // screens 1..5 count toward "Step X of 5"
 
 const $ = s => document.querySelector(s);
@@ -906,11 +995,16 @@ function show(idx){
 function updateChrome(){
   const topbar = $('#topbar'), backLink = $('#backLink'), slots = $('#slotsLeft');
 
-  // progress + step counter for form screens (1..6)
-  if(screenIdx >= S.GOAL && screenIdx <= S.CONTACT){
+  // progress + step counter for the form screens, plus the OTP step that
+  // hangs off the last one
+  if(screenIdx >= S.GOAL && screenIdx <= S.OTP){
+    // Verifying the number is still "last step" - the bar fills rather than
+    // overshooting the 5 steps the lead was promised.
+    const step = Math.min(screenIdx, FORM_STEPS);
     topbar.classList.remove('hidden');
-    $('#stepCount').textContent = `Step ${screenIdx} of ${FORM_STEPS}`;
-    $('#progressFill').style.width = (screenIdx/FORM_STEPS*100) + '%';
+    $('#stepCount').textContent = `Step ${step} of ${FORM_STEPS}`;
+    $('#progressFill').style.width = (step/FORM_STEPS*100) + '%';
+
     backLink.classList.remove('hidden');
   } else {
     topbar.classList.add('hidden');
@@ -927,6 +1021,7 @@ function updateChrome(){
   else if(screenIdx === S.GOAL){ setCta('Show my results', true, false); cta.disabled = !answers.gender; }
   else if(screenIdx === S.INTENT){ setCta('Find my cause &amp; start losing', true, false); cta.disabled = !groupAnswered(S.INTENT); }
   else if(screenIdx === S.CONTACT){ setCta('Book my free consultation', true, false); validateContact(false); }
+  else if(screenIdx === S.OTP){ setCta('Verify &amp; book my slot', true, false); cta.disabled = $('#otpCode').value.trim().length < OTP_LENGTH; }
   else if(screenIdx === S.DONE){ setCta('Confirm on WhatsApp now', true, true); cta.disabled = false; }
   else { setCta('Continue', true, false); cta.disabled = !groupAnswered(screenIdx); }
 }
@@ -1168,9 +1263,10 @@ $('#mainCta').addEventListener('click', () => {
     if(!validateContact(true)) return;
     answers.name = fnameInp.value.trim();
     answers.phone = phoneInp.value.trim();
-    submitLead();
+    startOtp();
     return;
   }
+  if(screenIdx === S.OTP){ verifyOtpCode(); return; }
   if(screenIdx === S.DONE){ openWhatsApp(); return; }
 });
 
@@ -1179,7 +1275,192 @@ $('#backLink').addEventListener('click', () => { if(screenIdx>0) show(screenIdx-
 function next(){ if(screenIdx < S.DONE) show(screenIdx+1); }
 
 /* =====================================================================
+   OTP - MSG91, driven through exposeMethods
+
+   Two gates, deliberately. The screen below stops honest mistakes: a
+   mistyped digit, someone else's number. The server-side check in
+   Code.gs stops everyone else, because a success callback in the browser
+   can be fired by hand from devtools and proves nothing on its own.
+   ===================================================================== */
+// These three mirror Widget Settings in the MSG91 dashboard. The widget is
+// the authority; this is only the UI agreeing with it. If you change them
+// there, change them here - a box that takes 6 digits for a 4-digit code, or
+// a Resend that stays greyed out for 30s when the widget allows 10, is the
+// kind of mismatch nobody reports and everybody feels.
+const OTP_LENGTH      = 4;    // Widget Settings -> OTP Length
+const OTP_RESEND_SECS = 10;   // Widget Settings -> Resend After (in seconds)
+const OTP_MAX_RESENDS = 3;    // Widget Settings -> Resend Count
+
+let otpCountdown = null, otpBusy = false, otpResendsUsed = 0;
+
+// Size the box from the constant rather than trusting the markup to keep up.
+(function sizeOtpBox(){
+  const el = $('#otpCode');
+  el.maxLength = OTP_LENGTH;
+  el.placeholder = '-'.repeat(OTP_LENGTH);
+})();
+
+
+function showOtpErr(msg){
+  const el = $('#otpErr');
+  if(msg) el.textContent = msg;
+  el.classList.add('show');
+  $('#otpNote').classList.remove('show');
+}
+
+function showOtpNote(msg){
+  const el = $('#otpNote');
+  el.textContent = msg;
+  el.classList.add('show');
+  $('#otpErr').classList.remove('show');
+}
+
+function showSendErr(msg){
+  const el = $('#sendErr');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+// Failures come back in a few different shapes. Surface something a person
+// can act on, and keep the raw object in the console for us.
+function otpReason(err, fallback){
+  console.log('[OTP] failure', err);
+  if(!err) return fallback;
+  if(typeof err === 'string') return err;
+  return err.message || err.msg || (err.data && err.data.message) || fallback;
+}
+
+function startOtp(){
+  if(otpBusy) return;
+  $('#sendErr').classList.remove('show');
+
+  if(typeof window.sendOtp !== 'function'){
+    showSendErr('Could not reach the verification service. Check your connection and try again.');
+    return;
+  }
+
+  otpBusy = true;
+  setCta('Sending code…', false, false);
+  $('#mainCta').disabled = true;
+
+  // MSG91 wants the country code with no +, so 91 in front of the 10 digits.
+  window.sendOtp('91' + answers.phone,
+    () => {
+      otpBusy = false;
+      otpResendsUsed = 0;
+      $('#otpTarget').textContent = '+91 ' + answers.phone;
+      $('#otpCode').value = '';
+      $('#otpErr').classList.remove('show');
+      $('#otpNote').classList.remove('show');
+      show(S.OTP);
+      startResendCountdown();
+      $('#otpCode').focus();
+    },
+    (err) => {
+      otpBusy = false;
+      updateChrome();
+      showSendErr(otpReason(err, 'We could not send the code. Check the number and try again.'));
+    }
+  );
+}
+
+function verifyOtpCode(){
+  if(otpBusy) return;
+  const code = $('#otpCode').value.trim();
+  if(code.length < OTP_LENGTH){ showOtpErr('Enter the ' + OTP_LENGTH + '-digit code from the SMS.'); return; }
+
+  otpBusy = true;
+  setCta('Verifying…', false, false);
+  $('#mainCta').disabled = true;
+
+  window.verifyOtp(code,
+    (data) => {
+      otpBusy = false;
+      answers.otpToken = readOtpToken(data);
+      clearInterval(otpCountdown);
+      submitLead();
+    },
+    (err) => {
+      otpBusy = false;
+      updateChrome();
+      showOtpErr(otpReason(err, 'That code did not match. Check and try again.'));
+    }
+  );
+}
+
+// MSG91 documents that verifyOtp returns a JWT but not where it sits in the
+// payload, so take the shapes it could plausibly arrive in and log the raw
+// object - the first live verification tells us which one it really is.
+function readOtpToken(data){
+  console.log('[OTP] verifyOtp payload', data);
+  if(!data) return '';
+  if(typeof data === 'string') return data;
+  const d = data.data || {};
+  return data['access-token'] || data.accessToken || data.message ||
+         d['access-token']    || d.accessToken    || d.message    || '';
+}
+
+function startResendCountdown(){
+  let left = OTP_RESEND_SECS;
+  const btn = $('#otpResend'), t = $('#otpTimer');
+  btn.disabled = true;
+  t.textContent = ` in ${left}s`;
+  clearInterval(otpCountdown);
+  otpCountdown = setInterval(() => {
+    left--;
+    if(left <= 0){ clearInterval(otpCountdown); btn.disabled = false; t.textContent = ''; }
+    else t.textContent = ` in ${left}s`;
+  }, 1000);
+}
+
+// Once the widget's resend allowance is spent, stop offering it. The count is
+// the gate, not the button's disabled attribute - that is a hint to the user,
+// not a control, and it takes one devtools click to undo.
+function lockResend(){
+  clearInterval(otpCountdown);
+  $('#otpResend').disabled = true;
+  $('#otpTimer').textContent = ' - no more resends';
+}
+
+$('#otpResend').addEventListener('click', () => {
+  const btn = $('#otpResend');
+  if(btn.disabled || typeof window.retryOtp !== 'function') return;
+  if(otpResendsUsed >= OTP_MAX_RESENDS){ lockResend(); return; }
+
+  btn.disabled = true;
+  window.retryOtp(null,
+    () => {
+      otpResendsUsed++;
+      showOtpNote('Code sent again.');
+      if(otpResendsUsed >= OTP_MAX_RESENDS) lockResend();
+      else startResendCountdown();
+    },
+    (err) => {
+      showOtpErr(otpReason(err, 'Could not resend just now. Try again in a moment.'));
+      // Only invite another tap if one is actually left.
+      if(otpResendsUsed >= OTP_MAX_RESENDS) lockResend();
+      else btn.disabled = false;
+    }
+  );
+});
+
+
+
+$('#otpChange').addEventListener('click', () => {
+  clearInterval(otpCountdown);
+  show(S.CONTACT);
+});
+
+$('#otpCode').addEventListener('input', () => {
+  const el = $('#otpCode');
+  el.value = el.value.replace(/\D/g, '').slice(0, OTP_LENGTH);
+  $('#otpErr').classList.remove('show');
+  if(screenIdx === S.OTP) $('#mainCta').disabled = el.value.length < OTP_LENGTH;
+});
+
+/* =====================================================================
    SUBMIT → CONFIRMATION
+
    ===================================================================== */
 function submitLead(){
   const cta = $('#mainCta');
@@ -1190,6 +1471,7 @@ function submitLead(){
     source: 'landing_page',
     lead_priority: answers.tier || 'warm',
     fullPhone: '+91' + answers.phone,
+    otpToken: answers.otpToken || '',
     submittedAt: new Date().toISOString(),
     utm: Object.fromEntries(new URLSearchParams(location.search).entries())
   };
