@@ -47,7 +47,14 @@ const COLUMNS = [
   'Priority',
   'Clinic',
   'Callback Slot',
-  // Q, R, S - what the lead did on the confirmation screen, after the row
+  // The two open questions, and what the page's validator made of them.
+  // 'Answer Flag' is advisory only - nothing was ever blocked on it, so a
+  // 'needs_review' row is a lead to read before dialling, not a lead to skip.
+  'Concern Area',
+  'Trying Since',
+  'Answer Score',
+  'Answer Flag',
+  // what the lead did on the confirmation screen, after the row
   // above was already written. 'No' on arrival, flipped to 'Yes' by an
   // update from the page. Anything added by hand to the RIGHT of these
   // (Lead Feedback and friends) is never touched.
@@ -130,6 +137,10 @@ function appendLead(lead) {
     lead.lead_priority || lead.tier || '',
     lead.clinic || '',
     lead.slot || '',
+    lead.area || '',
+    lead.since || '',
+    typeof lead.answerScore === 'number' ? lead.answerScore : '',
+    lead.answerFlag || '',
     'No',
     'No',
     'No'

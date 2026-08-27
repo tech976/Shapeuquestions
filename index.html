@@ -394,6 +394,38 @@ main{flex:1;position:relative;overflow:hidden}
   background:var(--green);color:#fff;padding:3px 7px;border-radius:6px;text-transform:uppercase;
 }
 
+/* ---------- Open-text answers (screens 3 & 4) ----------
+   Deliberately roomy: these are the only two screens that ask the lead to
+   type prose, and a cramped box reads as "this will take a while". */
+.open-q{margin-top:2px}
+textarea.txt-area{
+  width:100%;font-family:inherit;font-size:16px;font-weight:600;color:var(--ink);
+  background:var(--card);border:1.5px solid var(--line);border-radius:14px;
+  padding:14px 15px;line-height:1.5;resize:none;
+  transition:border-color .18s, box-shadow .18s;
+}
+textarea.txt-area::placeholder{color:#b7b2a8;font-weight:500;line-height:1.5}
+textarea.txt-area:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 4px rgba(193,39,45,.08)}
+/* red = we stopped you. amber = we asked once and will not ask again. */
+textarea.txt-area.err{border-color:#e04b4b;box-shadow:0 0 0 4px rgba(224,75,75,.10)}
+textarea.txt-area.warn{border-color:#dfa137;box-shadow:0 0 0 4px rgba(223,161,55,.12)}
+
+.oq-foot{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-top:7px;min-height:17px}
+.oq-msg{font-size:12px;font-weight:600;line-height:1.45}
+.oq-msg.err{color:#d13a3a}
+.oq-msg.warn{color:#a8720f}
+.oq-count{font-size:11px;color:#c2bcb2;font-weight:600;flex:none;font-variant-numeric:tabular-nums;padding-top:1px}
+
+.oq-chips-t{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin:18px 0 9px}
+.oq-chips{display:flex;flex-wrap:wrap;gap:7px}
+.oq-chip{
+  font-family:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;
+  background:var(--card);border:1.5px solid var(--line);border-radius:99px;padding:8px 13px;
+  transition:border-color .16s, background .16s, color .16s, transform .1s;
+}
+.oq-chip:active{transform:scale(.96)}
+.oq-chip.used{background:#fdf3f2;border-color:#f0cfcd;color:var(--red-deep)}
+
 /* ---------- Contact form ---------- */
 .field{margin-bottom:18px}
 .field label{display:block;font-size:12.5px;font-weight:700;color:#3a3a44;margin-bottom:7px;letter-spacing:.01em}
@@ -564,7 +596,7 @@ input.txt-inp.otp-inp::placeholder{letter-spacing:.35em;font-weight:600;font-siz
   <div class="topbar hidden" id="topbar">
     <div class="brand-row">
       <img class="brand-logo" src="logo.png" width="210" height="67" alt="Shape-U Obesity Clinic" />
-      <span class="step-count" id="stepCount">Step 1 of 6</span>
+      <span class="step-count" id="stepCount">Step 1 of 7</span>
     </div>
     <div class="progress"><i id="progressFill"></i></div>
   </div>
@@ -726,8 +758,65 @@ input.txt-inp.otp-inp::placeholder{letter-spacing:.35em;font-weight:600;font-siz
       </div>
     </section>
 
-    <!-- ============ SCREEN 3 : CLINIC ============ -->
+    <!-- ============ SCREEN 3 : CONCERN AREA ============ -->
     <section class="screen" data-screen="3">
+      <p class="q-kicker">Your concern</p>
+      <h2 class="q-title">What area would you like to get <span class="q-hl">treated</span>?</h2>
+      <p class="q-sub">In your own words — one line is enough. This is what our doctor reads before your call.</p>
+
+      <div class="open-q">
+        <textarea class="txt-area" id="areaInp" rows="3" maxlength="200"
+                  autocomplete="off" autocorrect="on" spellcheck="false"
+                  placeholder="e.g. Belly fat and love handles — nothing shifts them"></textarea>
+        <div class="oq-foot">
+          <span class="oq-msg" id="areaMsg"></span>
+          <span class="oq-count" id="areaCount">0/200</span>
+        </div>
+
+        <p class="oq-chips-t">Tap to add</p>
+        <div class="oq-chips" data-target="areaInp" data-mode="append">
+          <button type="button" class="oq-chip">Belly / tummy fat</button>
+          <button type="button" class="oq-chip">Love handles</button>
+          <button type="button" class="oq-chip">Thighs</button>
+          <button type="button" class="oq-chip">Arms</button>
+          <button type="button" class="oq-chip">Double chin</button>
+          <button type="button" class="oq-chip">Hips &amp; back</button>
+          <button type="button" class="oq-chip">Loose skin</button>
+          <button type="button" class="oq-chip">Overall weight</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 4 : HOW LONG ============ -->
+    <section class="screen" data-screen="4">
+      <p class="q-kicker">Your history</p>
+      <h2 class="q-title">Since when have you been trying to <span class="q-hl">fix this</span>?</h2>
+      <p class="q-sub">Roughly is fine. It tells our doctor what you’ve already tried — so they don’t suggest it again.</p>
+
+      <div class="open-q">
+        <textarea class="txt-area" id="sinceInp" rows="3" maxlength="200"
+                  autocomplete="off" autocorrect="on" spellcheck="false"
+                  placeholder="e.g. About 2 years, since my delivery — tried gym and dieting"></textarea>
+        <div class="oq-foot">
+          <span class="oq-msg" id="sinceMsg"></span>
+          <span class="oq-count" id="sinceCount">0/200</span>
+        </div>
+
+        <p class="oq-chips-t">Tap to fill</p>
+        <!-- replace, not append: these are alternatives, not a shopping list -->
+        <div class="oq-chips" data-target="sinceInp" data-mode="replace">
+          <button type="button" class="oq-chip">6 months or less</button>
+          <button type="button" class="oq-chip">About a year</button>
+          <button type="button" class="oq-chip">2–3 years</button>
+          <button type="button" class="oq-chip">5+ years</button>
+          <button type="button" class="oq-chip">Since my delivery</button>
+          <button type="button" class="oq-chip">On and off for years</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN 5 : CLINIC ============ -->
+    <section class="screen" data-screen="5">
       <p class="q-kicker">Location</p>
       <h2 class="q-title">Which clinic is nearest to you?</h2>
       <p class="q-sub">4 branches across Mumbai. Pick the most convenient one.</p>
@@ -755,8 +844,8 @@ input.txt-inp.otp-inp::placeholder{letter-spacing:.35em;font-weight:600;font-siz
       </div>
     </section>
 
-    <!-- ============ SCREEN 4 : CALLBACK SLOT ============ -->
-    <section class="screen" data-screen="4">
+    <!-- ============ SCREEN 6 : CALLBACK SLOT ============ -->
+    <section class="screen" data-screen="6">
       <p class="q-kicker">Your callback</p>
       <h2 class="q-title">When should our specialist call you?</h2>
       <p class="q-sub">You’ll get <b>one call from a single number</b> at the time you pick. Choose a window you can actually take the call.</p>
@@ -774,8 +863,8 @@ input.txt-inp.otp-inp::placeholder{letter-spacing:.35em;font-weight:600;font-siz
       </div>
     </section>
 
-    <!-- ============ SCREEN 5 : CONTACT ============ -->
-    <section class="screen" data-screen="5">
+    <!-- ============ SCREEN 7 : CONTACT ============ -->
+    <section class="screen" data-screen="7">
       <p class="q-kicker">Last step</p>
       <h2 class="q-title">Where should we confirm your slot?</h2>
       <p class="q-sub">Enter your own number so we call the right person. We confirm on WhatsApp too.</p>
@@ -829,8 +918,8 @@ input.txt-inp.otp-inp::placeholder{letter-spacing:.35em;font-weight:600;font-siz
       </form>
     </section>
 
-    <!-- ============ SCREEN 6 : VERIFY MOBILE ============ -->
-    <section class="screen" data-screen="6">
+    <!-- ============ SCREEN 8 : VERIFY MOBILE ============ -->
+    <section class="screen" data-screen="8">
       <p class="q-kicker">Verify your number</p>
       <h2 class="q-title">Enter the code we just sent</h2>
       <p class="q-sub">
@@ -856,8 +945,8 @@ input.txt-inp.otp-inp::placeholder{letter-spacing:.35em;font-weight:600;font-siz
       </p>
     </section>
 
-    <!-- ============ SCREEN 7 : CONFIRMATION ============ -->
-    <section class="screen" data-screen="7">
+    <!-- ============ SCREEN 9 : CONFIRMATION ============ -->
+    <section class="screen" data-screen="9">
 
       <div class="confirm-wrap">
         <div class="check-burst">
@@ -969,13 +1058,15 @@ const answers = {
   goal:"", goalPrice:"", targetKg:0,
   age:0, weight:0, height:0, gender:"",
   intent:"", tier:"", clinic:"", slot:"", name:"", phone:"", whatsapp:true,
+  // the two open questions, plus what the validator made of them (0-100)
+  area:"", since:"", areaScore:0, sinceScore:0,
   otpToken:""
 };
 let screenIdx = 0;
 
 // Named so a screen can be inserted without hunting down bare numbers.
-const S = { HERO:0, GOAL:1, INTENT:2, CLINIC:3, SLOT:4, CONTACT:5, OTP:6, DONE:7 };
-const FORM_STEPS = S.CONTACT; // screens 1..5 count toward "Step X of 5"
+const S = { HERO:0, GOAL:1, INTENT:2, AREA:3, DURATION:4, CLINIC:5, SLOT:6, CONTACT:7, OTP:8, DONE:9 };
+const FORM_STEPS = S.CONTACT; // screens 1..7 count toward "Step X of 7"
 
 const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
@@ -1020,6 +1111,10 @@ function updateChrome(){
   if(screenIdx === S.HERO){ setCta('Check my eligibility', true, false); cta.disabled = false; }
   else if(screenIdx === S.GOAL){ setCta('Show my results', true, false); cta.disabled = !answers.gender; }
   else if(screenIdx === S.INTENT){ setCta('Find my cause &amp; start losing', true, false); cta.disabled = !groupAnswered(S.INTENT); }
+  // The two typed screens keep the button LIVE even when empty. A greyed-out
+  // button with no explanation is the single biggest way to lose someone here;
+  // let them press it and have the validator say what it wants instead.
+  else if(screenIdx === S.AREA || screenIdx === S.DURATION){ setCta('Continue', true, false); cta.disabled = false; }
   else if(screenIdx === S.CONTACT){ setCta('Book my free consultation', true, false); validateContact(false); }
   else if(screenIdx === S.OTP){ setCta('Verify &amp; book my slot', true, false); cta.disabled = $('#otpCode').value.trim().length < OTP_LENGTH; }
   else if(screenIdx === S.DONE){ setCta('Confirm on WhatsApp now', true, true); cta.disabled = false; }
@@ -1254,10 +1349,321 @@ function validateContact(showErrors){
 }
 
 /* =====================================================================
+   OPEN-ANSWER VALIDATION  (screens 3 and 4)
+
+   Three layers, and only the dumbest of them is allowed to stop anybody.
+
+     Layer 1  junk gate   BLOCKS. Understands nothing about meaning. It asks
+                          one question - did a human type words, or mash keys?
+                          Keyboard runs, repeated characters, repeated stubs,
+                          English bigram coverage, and a filler blocklist.
+
+     Layer 2  relevance   NEVER blocks. Fuzzy-matches the answer against what
+                          this clinic actually treats (Dice bigram coefficient,
+                          so "tummi" and "duble chin" still land), scores it
+                          0-100, and nudges ONCE if it reads thin.
+
+     Layer 3  triage      Server side, in Code.gs, after the row is already
+                          written - so a slow or dead API can never cost a lead.
+
+   The rule that matters: a lead is nudged at most once, and whatever they
+   type on the second press goes through. Someone with a real concern the
+   lexicon has never heard of still books their slot. They simply arrive
+   tagged 'needs_review' instead of silently costing the clinic a call.
+   ===================================================================== */
+const OPEN_MAXLEN = 200;
+const OPEN_PASS   = 45;   // Layer 2 score at or above which we stay quiet
+
+// Devanagari and friends. Someone answering in Hindi script is unmistakably a
+// real person, and every Layer 1 heuristic below is Latin-only - so they skip
+// the gate rather than get told their own language is gibberish.
+const NON_LATIN = /[ऀ-ॿ਀-੿஀-௿ఀ-౿]/;
+
+function normOpen(s){
+  return String(s || '')
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')   // punctuation out, letters/digits stay
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function tokensOf(s){ return normOpen(s).split(' ').filter(Boolean); }
+
+/* ---------------------------------------------------------------------
+   LAYER 1  -  is this even an attempt?
+   --------------------------------------------------------------------- */
+
+// The ~215 commonest English letter pairs. Real words sit far above the
+// threshold, and so does Hinglish written in Latin script, because it draws
+// on the same pairs. Far smaller than shipping a trained Markov matrix, and
+// when it is wrong it is wrong in the safe direction.
+const COMMON_BIGRAMS = new Set((
+  'th he in er an re on at en nd ti es or te of ed is it al ar st to nt ng se ha as ou io ' +
+  'le ve co me de hi ri ro ic ne ea ra ce li ch ll be ma si om ur ca el ta la ns di fo ho pe ec pr no ct us ac ot il ' +
+  'tr ly nc et ut ss so rs un lo wa ge ie wh ee wi em ad ol rt po we na ul ni ts mo ow pa im mi ai sh ir su id os iv ' +
+  'ia am fi ci vi pl ig tu ev ld ry mp fe bl ab gh ty op wo sa ay ex ke fr oo av ag if ap gr od bo sp rd do uc bu ei ' +
+  'ov by rm ep tt oc fa ef cu rn sc gi da yo cr cl du ga qu ue ff ba ey ls va um pp ua up lu go ht ru ug ds lt pi rc ' +
+  'rr eg au ck ew mu br bi pt ak pu ui rg ib tl ny ki ys ob mm fu ph og ms ye ud mb ' +
+  // pairs that carry Hinglish but are rare in an English word list
+  'aa ah hu aj ja dh bh kh iy oa hl nk dr sl sm sn sw tw wn ya za jh'
+).split(' '));
+
+// Answers that are technically words and still tell us nothing.
+const FILLER = new Set([
+  'hi','hii','hello','hey','test','testing','abc','abcd','xyz','asd','asdf','qwerty',
+  'na','nan','nil','none','no','nope','yes','ok','okay','okk','k','hmm','hm','idk','nothing','nothin',
+  'kuch nahi','kuch nhi','aise hi','bas','bhai','na na','n a','yeah','yup','sure','fine','good','nice',
+  'blah','random','anything','something','same','all','1','12','123','1234','0','00','999'
+]);
+
+const KB_ROWS = ['qwertyuiop','asdfghjkl','zxcvbnm','1234567890','abcdefghijklmnopqrstuvwxyz'];
+
+// A 4-character straight run along a keyboard row (or the alphabet), forwards
+// or backwards: asdf, qwer, poiu, hgfd, 1234, defg.
+function hasStraightRun(letters){
+  for(const row of KB_ROWS){
+    for(const r of [row, row.split('').reverse().join('')]){
+      for(let i = 0; i + 4 <= r.length; i++){
+        if(letters.indexOf(r.slice(i, i + 4)) > -1) return true;
+      }
+    }
+  }
+  return false;
+}
+
+// "asdasd", "hahaha", "jkjkjkjk" - a short stub typed over and over.
+function isRepeatedStub(letters){
+  if(letters.length < 6) return false;
+  for(let n = 1; n <= 4; n++){
+    if(letters.length % n) continue;
+    const stub = letters.slice(0, n);
+    if(stub.repeat(letters.length / n) === letters) return true;
+  }
+  return false;
+}
+
+function bigramCoverage(letters){
+  if(letters.length < 3) return 1;            // too short to judge - so don't
+  let hit = 0, total = 0;
+  for(let i = 0; i < letters.length - 1; i++){
+    total++;
+    if(COMMON_BIGRAMS.has(letters.slice(i, i + 2))) hit++;
+  }
+  return total ? hit / total : 1;
+}
+
+/**
+ * Returns null when the answer may pass, or the message to show when it may not.
+ * Every rule here is a *signal*; it takes two points to stop someone, so no
+ * single heuristic misfiring can cost a lead on its own.
+ */
+function junkVerdict(raw){
+  const text = normOpen(raw);
+  if(!text || text.replace(/\s/g, '').length < 2)
+    return 'Please tell us in a few words — even a short answer helps.';
+
+  if(NON_LATIN.test(raw)) return null;        // not our alphabet, not our call
+
+  if(FILLER.has(text)) return 'That doesn’t tell us much. Please answer in your own words.';
+
+  const letters = text.replace(/[^a-z]/g, '');
+  if(!letters && !/\d/.test(text))
+    return 'Please tell us in a few words — even a short answer helps.';
+  if(!letters) return null;                   // digits only, e.g. "2019" - allow
+
+  const cover = bigramCoverage(letters);
+  const consonantRun = Math.max(0, ...(letters.match(/[^aeiou]+/g) || ['']).map(r => r.length));
+  const noVowelWord = tokensOf(text).some(t => t.length >= 4 && !/[aeiou]/.test(t));
+
+  let points = 0;
+  if(cover < 0.30)                  points += 2;
+  else if(cover < 0.45)             points += 1;
+  if(hasStraightRun(letters))       points += 2;
+  if(/(.)\1{3,}/.test(letters))     points += 2;   // aaaa, hhhh
+  if(isRepeatedStub(letters))       points += 2;
+  if(noVowelWord)                   points += 1;
+  if(consonantRun >= 6)             points += 1;
+
+  return points >= 2
+    ? 'That doesn’t look like an answer. Please tell us in your own words.'
+    : null;
+}
+
+/* ---------------------------------------------------------------------
+   LAYER 2  -  is it about anything we treat?
+   --------------------------------------------------------------------- */
+
+function biGrams(s){
+  const out = [];
+  for(let i = 0; i < s.length - 1; i++) out.push(s.slice(i, i + 2));
+  return out;
+}
+
+// Dice coefficient over character bigrams. Cheap, order-insensitive, and
+// forgiving of exactly the typos people make on a phone: tummi/tummy 0.75,
+// duble/double 0.67, stomac/stomach 0.91.
+function dice(a, b){
+  if(a === b) return 1;
+  if(a.length < 2 || b.length < 2) return 0;
+  const A = biGrams(a), B = biGrams(b), pool = B.slice();
+  let hit = 0;
+  for(const g of A){
+    const i = pool.indexOf(g);
+    if(i > -1){ hit++; pool.splice(i, 1); }
+  }
+  return (2 * hit) / (A.length + B.length);
+}
+
+// What Shape U actually treats, plus how leads actually say it.
+const AREA_TERMS = [
+  'belly','tummy','stomach','abdomen','abdominal','pet','paunch','pot belly','bloating',
+  'thigh','thighs','saddle bag','saddlebag','inner thigh','jangh',
+  'arm','arms','bicep','triceps','bazu','underarm',
+  'back','upper back','lower back','waist','kamar','flank','flanks','love handle','love handles','side fat',
+  'hip','hips','buttock','butt','glutes','bum',
+  'chin','double chin','jawline','jaw','face','facial','cheek','cheeks','neck','chehra',
+  'calf','calves','leg','legs','ankle','knee',
+  'breast','chest','man boobs','moobs','gynecomastia',
+  'whole body','full body','overall','all over','everywhere','body','shape','figure','physique',
+  'fat','weight','obese','obesity','overweight','motapa','vajan','wazan','bulge','bulky','heavy',
+  'inch loss','inches','cellulite','loose skin','sagging','saggy','loose','tightening','toning',
+  'post pregnancy','after delivery','delivery','pregnancy','c section','postpartum',
+  'thyroid','pcod','pcos','hormonal','insulin','diabetes','metabolism','menopause',
+  'slim','slimming','toned','tone','reduce','reduction','lose','loose weight','weight loss','trim',
+  'wrinkle','wrinkles','skin','younger','ageing','aging','stretch marks','marks','dull'
+];
+
+// Q4 wants a *when*, not a keyword. Rules beat a date library here: chrono-node
+// has never heard of "2 saal se" or "since my delivery".
+const SINCE_RULES = [
+  /\b\d+\s*\+?\s*(y|yr|yrs|year|years|saal|sal|varsh)\b/,
+  /\b\d+\s*(m|mo|mos|month|months|mahine|mahina|maheene)\b/,
+  /\b\d+\s*(w|week|weeks|hafta|hafte|day|days|din)\b/,
+  /\b(since|from|after|for|last|past|pichle|pichhle|over)\b/,
+  /\b(year|years|month|months|week|weeks|saal|mahine|decade|decades)\b/,
+  /\b(long time|longtime|forever|always|ever since|childhood|teenage|teens|college|school|marriage|shaadi|delivery|pregnancy|lockdown|covid|recently|recent|newly|just started)\b/,
+  /\b(one|two|three|four|five|six|seven|eight|nine|ten|couple|few|half)\b/,
+  /\b(19|20)\d\d\b/,
+  /\b(on and off|off and on|many times|several times|tried|trying|struggling)\b/
+];
+
+const AREA_HINT  = 'A few more words help our doctor prepare — e.g. “belly fat and love handles”. Or press Continue again to move on.';
+const SINCE_HINT = 'Roughly how long? e.g. “about 2 years” or “since my delivery”. Or press Continue again to move on.';
+
+function relevance(raw, key){
+  const text = normOpen(raw);
+  const toks = tokensOf(raw);
+  const lengthBonus = Math.min(20, toks.length * 4);
+  const hint = key === 'area' ? AREA_HINT : SINCE_HINT;
+
+  // Hindi script cleared Layer 1 and skips the lexicon too - we have no terms
+  // to match it against, and guessing would only produce a wrong nudge.
+  if(NON_LATIN.test(raw)) return { score: 70, hint: hint };
+
+  let hits = 0;
+  if(key === 'area'){
+    for(const term of AREA_TERMS){
+      if(term.indexOf(' ') > -1){ if(text.indexOf(term) > -1) hits++; continue; }
+      if(text.indexOf(term) > -1){ hits++; continue; }
+      if(term.length >= 5 && toks.some(t => t.length >= 4 && dice(t, term) >= 0.62)) hits++;
+    }
+  } else {
+    for(const rule of SINCE_RULES) if(rule.test(text)) hits++;
+  }
+
+  const base  = hits ? (key === 'area' ? 35 : 30) + Math.min(3, hits) * 25 : 0;
+  const score = Math.max(0, Math.min(100, base + lengthBonus));
+  return { score: score, hint: hint };
+}
+
+/* ---------------------------------------------------------------------
+   WIRING
+   --------------------------------------------------------------------- */
+const openQ = {
+  area:  { inp:'#areaInp',  msg:'#areaMsg',  count:'#areaCount',  field:'area',  score:'areaScore',  nudged:false },
+  since: { inp:'#sinceInp', msg:'#sinceMsg', count:'#sinceCount', field:'since', score:'sinceScore', nudged:false }
+};
+
+function setOpenMsg(c, kind, text){
+  const inp = $(c.inp), msg = $(c.msg);
+  inp.classList.remove('err','warn');
+  if(kind) inp.classList.add(kind);
+  msg.className = 'oq-msg' + (kind ? ' ' + kind : '');
+  msg.textContent = text || '';
+}
+
+/**
+ * The gate. Returns true when the lead may move to the next screen.
+ * Layer 1 can say no every time. Layer 2 gets exactly one no, ever.
+ */
+function checkOpen(key){
+  const c = openQ[key], inp = $(c.inp);
+
+  const junk = junkVerdict(inp.value);
+  if(junk){ setOpenMsg(c, 'err', junk); inp.focus(); return false; }
+
+  const rel = relevance(inp.value, key);
+  answers[c.field] = inp.value.trim();
+  answers[c.score] = rel.score;
+
+  if(rel.score < OPEN_PASS && !c.nudged){
+    c.nudged = true;                       // and never again
+    setOpenMsg(c, 'warn', rel.hint);
+    inp.focus();
+    return false;
+  }
+
+  setOpenMsg(c, '', '');
+  return true;
+}
+
+// What the sheet gets: 'ok', or a flag telling the caller to read the row first.
+function openAnswerFlag(){
+  const nudged = openQ.area.nudged || openQ.since.nudged;
+  const thin   = answers.areaScore < OPEN_PASS || answers.sinceScore < OPEN_PASS;
+  return (nudged || thin) ? 'needs_review' : 'ok';
+}
+
+Object.keys(openQ).forEach(key => {
+  const c = openQ[key], inp = $(c.inp);
+  inp.addEventListener('input', () => {
+    if(inp.value.length > OPEN_MAXLEN) inp.value = inp.value.slice(0, OPEN_MAXLEN);
+    $(c.count).textContent = inp.value.length + '/' + OPEN_MAXLEN;
+    setOpenMsg(c, '', '');                 // clear the moment they respond
+  });
+});
+
+// Suggestion chips. Still free text - they only pre-fill the box, and the lead
+// can edit or delete every word of it. Most people tap rather than type, which
+// is the cheapest gibberish prevention there is.
+$$('.oq-chips').forEach(box => {
+  box.addEventListener('click', e => {
+    const chip = e.target.closest('.oq-chip');
+    if(!chip) return;
+    const inp = $('#' + box.dataset.target);
+    const label = chip.textContent.trim();
+
+    if(box.dataset.mode === 'replace'){
+      box.querySelectorAll('.oq-chip').forEach(o => o.classList.remove('used'));
+      inp.value = label;
+    } else {
+      if(chip.classList.contains('used')) return;
+      const cur = inp.value.trim().replace(/[,\s]+$/, '');
+      const merged = cur ? cur + ', ' + label : label;
+      if(merged.length > OPEN_MAXLEN) return;
+      inp.value = merged;
+    }
+    chip.classList.add('used');
+    inp.dispatchEvent(new Event('input'));   // refresh counter, clear any message
+  });
+});
+
+/* =====================================================================
    MAIN CTA HANDLER
    ===================================================================== */
 $('#mainCta').addEventListener('click', () => {
   if(screenIdx === S.HERO){ next(); return; }
+  if(screenIdx === S.AREA){     if(checkOpen('area'))  next(); return; }
+  if(screenIdx === S.DURATION){ if(checkOpen('since')) next(); return; }
   if(screenIdx >= S.GOAL && screenIdx <= S.SLOT){ if(groupAnswered(screenIdx)) next(); return; }
   if(screenIdx === S.CONTACT){
     if(!validateContact(true)) return;
@@ -1470,6 +1876,11 @@ function submitLead(){
     ...answers,
     source: 'landing_page',
     lead_priority: answers.tier || 'warm',
+    // Layer 3 input: the raw text is already in ...answers, this is what the
+    // browser made of it. 'needs_review' never blocked anybody - it only tells
+    // the caller which rows to read before dialling.
+    answerScore: Math.round((answers.areaScore + answers.sinceScore) / 2),
+    answerFlag: openAnswerFlag(),
     fullPhone: '+91' + answers.phone,
     otpToken: answers.otpToken || '',
     submittedAt: new Date().toISOString(),
@@ -1726,7 +2137,7 @@ document.head.appendChild(style);
    ===================================================================== */
 // build scratch card only when the confirmation screen is first shown
 const _origShow = show;
-show = function(idx){ _origShow(idx); if(idx===6) setTimeout(initScratch, 120); };
+show = function(idx){ _origShow(idx); if(idx===S.DONE) setTimeout(initScratch, 120); };
 
 show(S.HERO);
 </script>
