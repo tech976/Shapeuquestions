@@ -1579,9 +1579,45 @@ function relevance(raw, key){
    WIRING
    --------------------------------------------------------------------- */
 const openQ = {
-  area:  { inp:'#areaInp',  msg:'#areaMsg',  count:'#areaCount',  field:'area',  score:'areaScore',  nudged:false },
-  since: { inp:'#sinceInp', msg:'#sinceMsg', count:'#sinceCount', field:'since', score:'sinceScore', nudged:false }
+  area:  { inp:'#areaInp',  msg:'#areaMsg',  count:'#areaCount',  field:'area',  score:'areaScore',  nudged:false, aiValid:null, ai:'' },
+  since: { inp:'#sinceInp', msg:'#sinceMsg', count:'#sinceCount', field:'since', score:'sinceScore', nudged:false, aiValid:null, ai:'' }
 };
+
+/* ---------------------------------------------------------------------
+   LAYER 3  -  the model, for answers the lexicon cannot place
+   --------------------------------------------------------------------- */
+
+// Same-origin. The Groq key lives in /api/validate on the server and is never
+// shipped to the browser. Every failure resolves to null, and null is read as
+// "no opinion" everywhere below - so a dead API behaves exactly like a pass.
+const AI_TIMEOUT_MS = 2200;
+
+async function askAi(key, text){
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), AI_TIMEOUT_MS);
+  try {
+    const r = await fetch('/api/validate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ q: key, text: text }),
+      signal: ctrl.signal
+    });
+    if(!r.ok) return null;
+    const d = await r.json();
+    return typeof d.valid === 'boolean' ? d : null;
+  } catch(e){
+    return null;                      // offline, timeout, blocked - no opinion
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// A second press while the model is thinking would advance two screens.
+function setOpenBusy(busy){
+  const cta = $('#mainCta');
+  if(busy){ cta.disabled = true; cta.textContent = 'Checking\u2026'; }
+  else updateChrome();                // restores the label for whatever screen we are on
+}
 
 function setOpenMsg(c, kind, text){
   const inp = $(c.inp), msg = $(c.msg);
@@ -1592,10 +1628,18 @@ function setOpenMsg(c, kind, text){
 }
 
 /**
- * The gate. Returns true when the lead may move to the next screen.
- * Layer 1 can say no every time. Layer 2 gets exactly one no, ever.
+ * The gate. Resolves true when the lead may move to the next screen.
+ *
+ * Layer 1 can say no every time. Layer 2 answers instantly for anything it
+ * recognises, so a lead who writes "belly fat" waits for nothing and costs
+ * nothing - only an answer the lexicon cannot place ever reaches the model.
+ * That is exactly where the model earns its keep: "i need a personal loan" is
+ * fluent English with normal letter pairs, and every heuristic above waves it
+ * straight through.
+ *
+ * Between them Layers 2 and 3 still get one no, in total, ever.
  */
-function checkOpen(key){
+async function checkOpen(key){
   const c = openQ[key], inp = $(c.inp);
 
   const junk = junkVerdict(inp.value);
@@ -1605,7 +1649,20 @@ function checkOpen(key){
   answers[c.field] = inp.value.trim();
   answers[c.score] = rel.score;
 
-  if(rel.score < OPEN_PASS && !c.nudged){
+  // The lexicon is confident - no round trip, no wait, no cost.
+  if(rel.score >= OPEN_PASS){ setOpenMsg(c, '', ''); return true; }
+
+  setOpenBusy(true);
+  const ai = await askAi(key, inp.value.trim());
+  setOpenBusy(false);
+
+  c.aiValid = ai ? ai.valid : null;
+  c.ai      = ai ? (ai.reason || '') : 'model unavailable';
+
+  // The model recognised something the lexicon had never heard of.
+  if(ai && ai.valid){ setOpenMsg(c, '', ''); return true; }
+
+  if(!c.nudged){
     c.nudged = true;                       // and never again
     setOpenMsg(c, 'warn', rel.hint);
     inp.focus();
@@ -1616,11 +1673,20 @@ function checkOpen(key){
   return true;
 }
 
-// What the sheet gets: 'ok', or a flag telling the caller to read the row first.
+// What the sheet gets: 'ok', or a flag telling the caller to read the row
+// first - with the model's own words for why, when it had an opinion. Folded
+// into the existing Answer Flag column so the sheet needs no second migration.
 function openAnswerFlag(){
-  const nudged = openQ.area.nudged || openQ.since.nudged;
-  const thin   = answers.areaScore < OPEN_PASS || answers.sinceScore < OPEN_PASS;
-  return (nudged || thin) ? 'needs_review' : 'ok';
+  const notes = [];
+
+  [['area', answers.areaScore], ['since', answers.sinceScore]].forEach(pair => {
+    const c = openQ[pair[0]], score = pair[1];
+    if(c.aiValid === true) return;                              // model cleared it
+    if(c.aiValid === false){ notes.push(pair[0] + ': ' + (c.ai || 'off topic')); return; }
+    if(score < OPEN_PASS) notes.push(pair[0] + ': ' + (c.ai || 'thin answer'));
+  });
+
+  return notes.length ? 'needs_review \u2014 ' + notes.join('; ') : 'ok';
 }
 
 Object.keys(openQ).forEach(key => {
@@ -1637,8 +1703,14 @@ Object.keys(openQ).forEach(key => {
    ===================================================================== */
 $('#mainCta').addEventListener('click', () => {
   if(screenIdx === S.HERO){ next(); return; }
-  if(screenIdx === S.AREA){     if(checkOpen('area'))  next(); return; }
-  if(screenIdx === S.DURATION){ if(checkOpen('since')) next(); return; }
+  // Async now. The screen is re-checked on resolve, so pressing Back while
+  // the model is thinking cannot advance the lead from where they ended up.
+  if(screenIdx === S.AREA || screenIdx === S.DURATION){
+    const at = screenIdx;
+    checkOpen(at === S.AREA ? 'area' : 'since')
+      .then(ok => { if(ok && screenIdx === at) next(); });
+    return;
+  }
   if(screenIdx >= S.GOAL && screenIdx <= S.SLOT){ if(groupAnswered(screenIdx)) next(); return; }
   if(screenIdx === S.CONTACT){
     if(!validateContact(true)) return;
