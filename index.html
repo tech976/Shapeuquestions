@@ -419,12 +419,13 @@ textarea.txt-area.warn{border-color:#dfa137;box-shadow:0 0 0 4px rgba(223,161,55
 .oq-chips-t{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin:18px 0 9px}
 .oq-chips{display:flex;flex-wrap:wrap;gap:7px}
 .oq-chip{
-  font-family:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;
-  background:var(--card);border:1.5px solid var(--line);border-radius:99px;padding:8px 13px;
-  transition:border-color .16s, background .16s, color .16s, transform .1s;
+  /* Read-only hints. Nothing here is clickable, so nothing here carries a
+     cursor, a press state or a hover - a chip that looks like a button but
+     does nothing is worse than no chip at all. */
+  display:inline-block;font-family:inherit;font-size:12.5px;font-weight:600;
+  color:var(--muted);background:var(--line-2);border:1px solid var(--line);
+  border-radius:99px;padding:6px 11px;
 }
-.oq-chip:active{transform:scale(.96)}
-.oq-chip.used{background:#fdf3f2;border-color:#f0cfcd;color:var(--red-deep)}
 
 /* ---------- Contact form ---------- */
 .field{margin-bottom:18px}
@@ -773,16 +774,16 @@ input.txt-inp.otp-inp::placeholder{letter-spacing:.35em;font-weight:600;font-siz
           <span class="oq-count" id="areaCount">0/200</span>
         </div>
 
-        <p class="oq-chips-t">Tap to add</p>
-        <div class="oq-chips" data-target="areaInp" data-mode="append">
-          <button type="button" class="oq-chip">Belly / tummy fat</button>
-          <button type="button" class="oq-chip">Love handles</button>
-          <button type="button" class="oq-chip">Thighs</button>
-          <button type="button" class="oq-chip">Arms</button>
-          <button type="button" class="oq-chip">Double chin</button>
-          <button type="button" class="oq-chip">Hips &amp; back</button>
-          <button type="button" class="oq-chip">Loose skin</button>
-          <button type="button" class="oq-chip">Overall weight</button>
+        <p class="oq-chips-t">Keywords you can use</p>
+        <div class="oq-chips">
+          <span class="oq-chip">Belly / tummy fat</span>
+          <span class="oq-chip">Love handles</span>
+          <span class="oq-chip">Thighs</span>
+          <span class="oq-chip">Arms</span>
+          <span class="oq-chip">Double chin</span>
+          <span class="oq-chip">Hips &amp; back</span>
+          <span class="oq-chip">Loose skin</span>
+          <span class="oq-chip">Overall weight</span>
         </div>
       </div>
     </section>
@@ -802,15 +803,14 @@ input.txt-inp.otp-inp::placeholder{letter-spacing:.35em;font-weight:600;font-siz
           <span class="oq-count" id="sinceCount">0/200</span>
         </div>
 
-        <p class="oq-chips-t">Tap to fill</p>
-        <!-- replace, not append: these are alternatives, not a shopping list -->
-        <div class="oq-chips" data-target="sinceInp" data-mode="replace">
-          <button type="button" class="oq-chip">6 months or less</button>
-          <button type="button" class="oq-chip">About a year</button>
-          <button type="button" class="oq-chip">2–3 years</button>
-          <button type="button" class="oq-chip">5+ years</button>
-          <button type="button" class="oq-chip">Since my delivery</button>
-          <button type="button" class="oq-chip">On and off for years</button>
+        <p class="oq-chips-t">Keywords you can use</p>
+        <div class="oq-chips">
+          <span class="oq-chip">6 months or less</span>
+          <span class="oq-chip">About a year</span>
+          <span class="oq-chip">2–3 years</span>
+          <span class="oq-chip">5+ years</span>
+          <span class="oq-chip">Since my delivery</span>
+          <span class="oq-chip">On and off for years</span>
         </div>
       </div>
     </section>
@@ -1629,31 +1629,6 @@ Object.keys(openQ).forEach(key => {
     if(inp.value.length > OPEN_MAXLEN) inp.value = inp.value.slice(0, OPEN_MAXLEN);
     $(c.count).textContent = inp.value.length + '/' + OPEN_MAXLEN;
     setOpenMsg(c, '', '');                 // clear the moment they respond
-  });
-});
-
-// Suggestion chips. Still free text - they only pre-fill the box, and the lead
-// can edit or delete every word of it. Most people tap rather than type, which
-// is the cheapest gibberish prevention there is.
-$$('.oq-chips').forEach(box => {
-  box.addEventListener('click', e => {
-    const chip = e.target.closest('.oq-chip');
-    if(!chip) return;
-    const inp = $('#' + box.dataset.target);
-    const label = chip.textContent.trim();
-
-    if(box.dataset.mode === 'replace'){
-      box.querySelectorAll('.oq-chip').forEach(o => o.classList.remove('used'));
-      inp.value = label;
-    } else {
-      if(chip.classList.contains('used')) return;
-      const cur = inp.value.trim().replace(/[,\s]+$/, '');
-      const merged = cur ? cur + ', ' + label : label;
-      if(merged.length > OPEN_MAXLEN) return;
-      inp.value = merged;
-    }
-    chip.classList.add('used');
-    inp.dispatchEvent(new Event('input'));   // refresh counter, clear any message
   });
 });
 
