@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- Meta Pixel Code -->
+
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -883,6 +884,19 @@ input.txt-inp.otp-inp::placeholder{letter-spacing:.35em;font-weight:600;font-siz
         </div>
 
         <div class="field">
+          <label for="fld_c">Your last name</label>
+          <!-- Same opaque naming as the other fields: Chrome's heuristics key
+               off the name attribute, and a recognisable one brings back the
+               prefill dropdown this form deliberately avoids. -->
+          <input class="txt-inp" id="fld_c" name="l_4k8r" type="text" inputmode="text"
+                 autocomplete="off" autocorrect="off" spellcheck="false"
+                 data-lpignore="true" data-1p-ignore data-bwignore="true"
+                 data-form-type="other" placeholder="e.g. Sharma" maxlength="30" />
+          <div class="err-msg" id="lnameErr">Please enter your last name.</div>
+        </div>
+
+
+        <div class="field">
           <label for="phone">Mobile number</label>
           <div class="inp-wrap">
             <span class="pre">🇮🇳 +91</span>
@@ -900,6 +914,16 @@ input.txt-inp.otp-inp::placeholder{letter-spacing:.35em;font-weight:600;font-siz
           </div>
           <div class="err-msg" id="phoneErr">Enter a valid 10-digit mobile starting 6–9.</div>
         </div>
+
+        <div class="field">
+          <label for="fld_d">Email address</label>
+          <input class="txt-inp" id="fld_d" name="e_2w6p" type="text" inputmode="email"
+                 autocomplete="off" autocorrect="off" spellcheck="false"
+                 data-lpignore="true" data-1p-ignore data-bwignore="true"
+                 data-form-type="other" placeholder="you@example.com" maxlength="60" />
+          <div class="err-msg" id="emailErr">Enter a valid email address.</div>
+        </div>
+
 
         <div class="wa-optin on" id="waOptin" role="checkbox" aria-checked="true" tabindex="0">
           <span class="box"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -1057,7 +1081,7 @@ const CONFIG = {
 const answers = {
   goal:"", goalPrice:"", targetKg:0,
   age:0, weight:0, height:0, gender:"",
-  intent:"", tier:"", clinic:"", slot:"", name:"", phone:"", whatsapp:true,
+  intent:"", tier:"", clinic:"", slot:"", name:"", lastName:"", email:"", phone:"", whatsapp:true,
   // the two open questions, plus what the validator made of them (0-100)
   area:"", since:"", areaScore:0, sinceScore:0,
   otpToken:""
@@ -1320,6 +1344,7 @@ waOptin.addEventListener('keydown', e => { if(e.key===' '||e.key==='Enter'){ e.p
    CONTACT VALIDATION  (autofill defeated, manual entry enforced)
    ===================================================================== */
 const phoneInp = $('#fld_b'), fnameInp = $('#fld_a');
+const lnameInp = $('#fld_c'), emailInp = $('#fld_d');
 
 // strip non-digits live
 phoneInp.addEventListener('input', () => {
@@ -1327,26 +1352,46 @@ phoneInp.addEventListener('input', () => {
   validateContact(false);
 });
 fnameInp.addEventListener('input', () => validateContact(false));
+lnameInp.addEventListener('input', () => validateContact(false));
+emailInp.addEventListener('input', () => validateContact(false));
+
+// Deliberately permissive: something@something.tld, no character-class
+// policing. A regex that rejects a real address costs a booking, and the
+// only thing this check is really for is catching a typo before the lead
+// walks away thinking they are contactable.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 function validateContact(showErrors){
   const name = fnameInp.value.trim();
+  const lname = lnameInp.value.trim();
+  const email = emailInp.value.trim();
   const phone = phoneInp.value.trim();
+
   const phoneOk = /^[6-9]\d{9}$/.test(phone);
-  const nameOk = name.length >= 2;
+  const nameOk  = name.length >= 2;
+  const lnameOk = lname.length >= 2;
+  const emailOk = EMAIL_RE.test(email);
 
-  if(showErrors){
-    $('#fnameErr').classList.toggle('show', !nameOk);
-    fnameInp.classList.toggle('err', !nameOk);
-    $('#phoneErr').classList.toggle('show', !phoneOk);
-    phoneInp.classList.toggle('err', !phoneOk);
-  } else {
-    if(phoneOk){ phoneInp.classList.remove('err'); $('#phoneErr').classList.remove('show'); }
-    if(nameOk){ fnameInp.classList.remove('err'); $('#fnameErr').classList.remove('show'); }
-  }
+  const mark = (ok, inp, errId) => {
+    if(showErrors){
+      $(errId).classList.toggle('show', !ok);
+      inp.classList.toggle('err', !ok);
+    } else if(ok){
+      inp.classList.remove('err');
+      $(errId).classList.remove('show');
+    }
+  };
 
-  if(screenIdx === S.CONTACT) $('#mainCta').disabled = !(phoneOk && nameOk);
-  return phoneOk && nameOk;
+  mark(nameOk,  fnameInp, '#fnameErr');
+  mark(lnameOk, lnameInp, '#lnameErr');
+  mark(phoneOk, phoneInp, '#phoneErr');
+  mark(emailOk, emailInp, '#emailErr');
+
+  const allOk = phoneOk && nameOk && lnameOk && emailOk;
+  if(screenIdx === S.CONTACT) $('#mainCta').disabled = !allOk;
+  return allOk;
 }
+
 
 /* =====================================================================
    OPEN-ANSWER VALIDATION  (screens 3 and 4)
@@ -1715,6 +1760,8 @@ $('#mainCta').addEventListener('click', () => {
   if(screenIdx === S.CONTACT){
     if(!validateContact(true)) return;
     answers.name = fnameInp.value.trim();
+    answers.lastName = lnameInp.value.trim();
+    answers.email = emailInp.value.trim();
     answers.phone = phoneInp.value.trim();
     startOtp();
     return;
