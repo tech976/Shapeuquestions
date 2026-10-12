@@ -10,6 +10,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+<!-- Freshworks / Freshchat widget. Loads async and is independent of the
+     booking funnel: if it fails or is blocked, nothing about the form or the
+     lead POST changes. https is explicit rather than protocol-relative so it
+     cannot be fetched over http from a mixed-content page. -->
+<script src="https://in.fw-cdn.com/30630659/341479.js" chat="true" async></script>
+
 <!-- Meta Pixel Code -->
 
 <script>
