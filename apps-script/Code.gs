@@ -33,8 +33,14 @@ const NOTIFY_EMAIL = '';
 const COLUMNS = [
   'Timestamp',
   'Name',
+  // Added later than the rest, so they sit beside the fields they belong
+  // with rather than at the end - the far right of the sheet is where the
+  // hand-kept columns live, and appending there would have landed on them.
+  'Last Name',
   'Phone',
+  'Email',
   'WhatsApp OK',
+
   'Goal',
   'Goal Price',
   'Age',
@@ -121,10 +127,13 @@ function appendLead(lead) {
   sheet.appendRow([
     Utilities.formatDate(new Date(), TIMEZONE, 'yyyy-MM-dd HH:mm:ss'),
     lead.name || '',
+    lead.lastName || '',
     // Leading apostrophe keeps Sheets from treating a leading + as a formula
     // and from stripping a leading 0 off the number.
     text(lead.fullPhone || lead.phone),
+    lead.email || '',
     lead.whatsapp ? 'Yes' : 'No',
+
     lead.goal || '',
     lead.goalPrice || '',
     lead.age || '',
